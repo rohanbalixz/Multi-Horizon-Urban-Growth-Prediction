@@ -656,8 +656,8 @@ framework
 ### 👤 **Rohan Bali**
 
 [![GitHub](https://img.shields.io/badge/GitHub-@rohanbalixz-181717?style=for-the-badge&logo=github)](https://github.com/rohanbalixz)
-[![Email](https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail)](mailto:rohan.bali@example.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/rohanbali)
+[![Email](https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail)](mailto:rohanbaliwork@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/rohan-bali-301345293/)
 
 </div>
 
@@ -1097,8 +1097,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions, collaborations, or bug reports:
 
 - **Issues**: https://github.com/yourusername/NeuralTimeCapsule/issues
-- **Email**: your.email@example.com
-- **Research Group**: [Your Institution/Lab]
+- **Email**: rohanbaliwork@gmail.com
+- **Research Group**: University of Massachusetts Dartmouth
 
 ---
 
