@@ -382,7 +382,6 @@ Training Pipeline:
 ### **"Neural Time Capsule: Forecasting Urban Development Through Multi-Decadal Spatio-Temporal ConvLSTM"**
 
 [![Paper](https://img.shields.io/badge/Read_Paper-PDF-red?style=for-the-badge)](paper/main.tex)
-[![Overleaf](https://img.shields.io/badge/Edit_on-Overleaf-success?style=for-the-badge)](https://www.overleaf.com/)
 [![arXiv](https://img.shields.io/badge/arXiv-Coming_Soon-orange?style=for-the-badge)](https://arxiv.org/)
 
 </div>
