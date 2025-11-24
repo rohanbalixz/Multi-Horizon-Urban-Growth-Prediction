@@ -1,0 +1,93 @@
+# ============================================
+# Ignore LARGE DATA & GEOSPATIAL FILES
+# ============================================
+data/
+datasets/
+geotiff_exports/
+*.tif
+*.tiff
+*.img
+*.zip
+*.gz
+*.hdf
+*.jsonl
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+
+# ============================================
+# Ignore MODEL WEIGHTS & PREDICTIONS
+# Exception: Keep best_urban_growth_model.pth (tracked)
+# ============================================
+*.pth
+!best_urban_growth_model.pth
+*.pt
+*.pkl
+*.pickle
+*.ckpt
+*.npz
+*.npy
+
+# ============================================
+# Ignore ENVIRONMENTS
+# ============================================
+.venv/
+env/
+venv/
+*.egg-info/
+
+# ============================================
+# Python cache
+# ============================================
+__pycache__/
+*.pyc
+*.pyo
+
+# ============================================
+# Jupyter
+# ============================================
+.ipynb_checkpoints/
+
+# ============================================
+# MacOS
+# ============================================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ============================================
+# LaTeX build artifacts
+# ============================================
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+
+# ============================================
+# IDEs and Editors
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ============================================
+# Temporary files
+# ============================================
+*.tmp
+*.bak
+*.backup
+cleanup_repo.sh
