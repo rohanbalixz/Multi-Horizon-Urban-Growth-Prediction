@@ -4,7 +4,7 @@
 
 ### *Forecasting Urban Development Through Multi-Decadal Spatio-Temporal Deep Learning*
 
-[![Paper](https://img.shields.io/badge/📄_Paper-Read_Now-success?style=for-the-badge)](https://github.com/rohanbalixz/NeuralTimeCapsule-Urban-Growth-Prediction-with-ConvLSTM/blob/main/paper/Bali2025_NeuralTimeCapsule_UrbanGrowthPrediction.pdf)
+[![Paper](https://img.shields.io/badge/📄_Paper-Read_Now-success?style=for-the-badge)](https://github.com/rohanbalixz/NeuralTimeCapsule/blob/main/paper/Bali2025_NeuralTimeCapsule_UrbanGrowthPrediction.pdf)
 [![arXiv](https://img.shields.io/badge/📚_arXiv-Coming_Soon-red?style=for-the-badge)](https://arxiv.org/)
 [![License: MIT](https://img.shields.io/badge/⚖️_License-MIT-blue?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/🐍_Python-3.8+-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
@@ -381,7 +381,7 @@ Training Pipeline:
 
 ### **"Neural Time Capsule: Forecasting Urban Development Through Multi-Decadal Spatio-Temporal ConvLSTM"**
 
-[![Paper](https://img.shields.io/badge/Read_Paper-PDF-red?style=for-the-badge)](https://github.com/rohanbalixz/NeuralTimeCapsule-Urban-Growth-Prediction-with-ConvLSTM/blob/main/paper/Bali2025_NeuralTimeCapsule_UrbanGrowthPrediction.pdf)
+[![Paper](https://img.shields.io/badge/Read_Paper-PDF-red?style=for-the-badge)](https://github.com/rohanbalixz/NeuralTimeCapsule/blob/main/paper/Bali2025_NeuralTimeCapsule_UrbanGrowthPrediction.pdf)
 [![arXiv](https://img.shields.io/badge/arXiv-Coming_Soon-orange?style=for-the-badge)](https://arxiv.org/)
 
 </div>
