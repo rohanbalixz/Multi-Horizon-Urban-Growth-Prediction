@@ -1,4 +1,4 @@
-# Contributing to Neural Time Capsule
+# Contributing to Multi-Horizon Urban Growth Prediction
 
 Thank you for your interest in contributing! This document provides guidelines for contributing to the project.
 
@@ -7,8 +7,8 @@ Thank you for your interest in contributing! This document provides guidelines f
 1. **Fork the repository**
 2. **Clone your fork**:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/NeuralTimeCapsule.git
-   cd NeuralTimeCapsule
+   git clone https://github.com/YOUR_USERNAME/Multi-Horizon-Urban-Growth-Prediction.git
+   cd Multi-Horizon-Urban-Growth-Prediction
    ```
 3. **Create a virtual environment**:
    ```bash
@@ -237,4 +237,4 @@ Contributors will be acknowledged in:
 
 Don't hesitate to ask! Open an issue with the `question` label or reach out directly.
 
-Thank you for contributing to Neural Time Capsule! 🚀
+Thank you for contributing.

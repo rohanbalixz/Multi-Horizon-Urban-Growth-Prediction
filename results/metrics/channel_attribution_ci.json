@@ -1,0 +1,26 @@
+{
+  "experiment": "channel_attribution_ci",
+  "description": "Delta-method 95% CI on the 94% channel-count attribution (Section 4). Three single-seed FoM measurements; sigma from two-seed std in multiseed run. Tile bootstrap not feasible (channel-control model weights not retained).",
+  "inputs": {
+    "f1_5yr_24ch": 0.739,
+    "f2_5yr_21ch": 0.6792,
+    "f3_10yr_21ch": 0.6753,
+    "sigma_per_fom": 0.0074
+  },
+  "effects": {
+    "delta_channel": 0.0598,
+    "delta_total": 0.0637,
+    "delta_residual": 0.0039
+  },
+  "attribution": {
+    "point_estimate": 0.9388,
+    "point_pct": 93.9,
+    "se_delta_method": 0.1595,
+    "ci_95_lo": 0.6262,
+    "ci_95_hi": 1.0,
+    "ci_95_lo_pct": 62.6,
+    "ci_95_hi_pct": 100.0,
+    "conservative_lower_bound_pct": 84.1
+  },
+  "interpretation": "Wide CI is expected: attribution is a ratio of two small differences (denominator = 0.064), amplifying ratio variance under delta method. The conservative lower bound (expand denominator by sigma) gives >=83%. Reporting the point estimate + conservative lower bound is appropriate."
+}

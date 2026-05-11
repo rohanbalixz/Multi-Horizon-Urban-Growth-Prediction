@@ -1,0 +1,39 @@
+{
+  "experiment": "unet_multiseed",
+  "description": "SimpleUNet trained at seeds 0 and 42, same spatial block holdout",
+  "architecture": "SimpleUNet_3ch_flatstack",
+  "params": 473857,
+  "per_seed": {
+    "42": {
+      "fom_2015": 0.6756,
+      "model_path": "models/best_unet_3ch.pth",
+      "source": "unet_2020_holdout.json[spatial_holdout_2015]",
+      "eval_mask": "counts>0 & gt_2015>0.01"
+    },
+    "0": {
+      "fom_2015": 0.6842,
+      "mse_2015": 5.986e-05,
+      "model_path": "models/best_unet_3ch_seed0.pth",
+      "n_eval_pixels": 1542747,
+      "n_growth_pixels": 386623,
+      "pct_growth": 25.06,
+      "eval_mask": "counts>0 & gt_2015>0.01",
+      "A": 84479,
+      "B": 302144,
+      "C": 54967,
+      "training_time_min": 766.2
+    }
+  },
+  "summary": {
+    "n_seeds": 2,
+    "seeds": [
+      42,
+      0
+    ],
+    "fom_2015_mean": 0.6799,
+    "fom_2015_std": 0.0043,
+    "fom_2015_min": 0.6756,
+    "fom_2015_max": 0.6842
+  },
+  "timestamp": "2026-04-22 12:39:17.604328"
+}

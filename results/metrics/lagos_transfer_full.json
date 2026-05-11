@@ -1,0 +1,163 @@
+{
+  "experiment": "lagos_full_transfer_eval",
+  "description": "Zero-shot transfer evaluation with threshold sweep and baselines. SimpleCNN seed 42, no retraining. Eval mask: gt_2015 > 0.01. Thresholds swept for change classification: [0.005, 0.01, 0.02, 0.05, 0.1]",
+  "model": "SimpleCNN_seed42 (best_cnn_3ch.pth, 74K params)",
+  "region": "Lagos metropolitan area, Nigeria",
+  "bounds_wgs84": {
+    "west": 2.7,
+    "east": 4.3,
+    "south": 5.8,
+    "north": 7.3
+  },
+  "n_tiles": 20,
+  "n_eval_pixels": 63840,
+  "n_growth_pixels": 44415,
+  "pct_growth": 69.57,
+  "normalization": {
+    "volume": "log1p / 12.638270",
+    "population": "log1p / 7.850564"
+  },
+  "cnn_threshold_sweep": {
+    "0.005": {
+      "fom": 0.4598,
+      "precision": 0.7682,
+      "recall": 0.5338,
+      "A": 21090,
+      "B": 24149,
+      "C": 7285
+    },
+    "0.01": {
+      "fom": 0.408,
+      "precision": 0.7424,
+      "recall": 0.4753,
+      "A": 23304,
+      "B": 21111,
+      "C": 7324
+    },
+    "0.02": {
+      "fom": 0.4078,
+      "precision": 0.6988,
+      "recall": 0.4948,
+      "A": 18163,
+      "B": 17786,
+      "C": 7668
+    },
+    "0.05": {
+      "fom": 0.3806,
+      "precision": 0.6136,
+      "recall": 0.5006,
+      "A": 12223,
+      "B": 12252,
+      "C": 7717
+    },
+    "0.1": {
+      "fom": 0.2886,
+      "precision": 0.4739,
+      "recall": 0.4246,
+      "A": 8590,
+      "B": 6340,
+      "C": 7038
+    }
+  },
+  "convlstm_threshold_sweep": {
+    "0.005": {
+      "fom": 0.2283,
+      "precision": 0.6733,
+      "recall": 0.2567,
+      "A": 33626,
+      "B": 11613,
+      "C": 5634
+    },
+    "0.01": {
+      "fom": 0.1889,
+      "precision": 0.641,
+      "recall": 0.2113,
+      "A": 35030,
+      "B": 9385,
+      "C": 5257
+    },
+    "0.02": {
+      "fom": 0.1708,
+      "precision": 0.6034,
+      "recall": 0.1924,
+      "A": 29033,
+      "B": 6916,
+      "C": 4545
+    },
+    "0.05": {
+      "fom": 0.1158,
+      "precision": 0.5303,
+      "recall": 0.129,
+      "A": 21318,
+      "B": 3157,
+      "C": 2796
+    },
+    "0.1": {
+      "fom": 0.0431,
+      "precision": 0.3713,
+      "recall": 0.0466,
+      "A": 14235,
+      "B": 695,
+      "C": 1177
+    }
+  },
+  "linear_extrap_threshold_sweep": {
+    "0.005": {
+      "fom": 0.4301,
+      "precision": 0.846,
+      "recall": 0.4666,
+      "A": 24130,
+      "B": 21109,
+      "C": 3844
+    },
+    "0.01": {
+      "fom": 0.3117,
+      "precision": 0.8403,
+      "recall": 0.3313,
+      "A": 29699,
+      "B": 14716,
+      "C": 2796
+    },
+    "0.02": {
+      "fom": 0.2198,
+      "precision": 0.8362,
+      "recall": 0.2297,
+      "A": 27692,
+      "B": 8257,
+      "C": 1618
+    },
+    "0.05": {
+      "fom": 0.0627,
+      "precision": 0.7334,
+      "recall": 0.0642,
+      "A": 22904,
+      "B": 1571,
+      "C": 571
+    },
+    "0.1": {
+      "fom": 0.0047,
+      "precision": 0.441,
+      "recall": 0.0048,
+      "A": 14859,
+      "B": 71,
+      "C": 90
+    }
+  },
+  "trivial_predict_all_growth": {
+    "fom": 0.6957,
+    "precision": 0.6957,
+    "recall": 1.0,
+    "A": 0,
+    "B": 44415,
+    "C": 19425
+  },
+  "persistence": {
+    "fom": 0.0,
+    "note": "predicts no growth; FoM=0 by construction"
+  },
+  "conus_reference": {
+    "cnn_fom_2015_spatial": 0.702,
+    "cnn_fom_2020_temporal": 0.252
+  },
+  "timestamp": "2026-05-02T16:29:07.384645"
+}

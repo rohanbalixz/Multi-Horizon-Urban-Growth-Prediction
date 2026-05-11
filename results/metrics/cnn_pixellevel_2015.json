@@ -1,0 +1,39 @@
+{
+  "experiment": "cnn_pixellevel_2015",
+  "description": "CNN 2015 FoM/MSE recomputed with pixel-level eval_mask = (counts>0) & (gt>0.01), identical to validate_2015.py. Makes CNN directly comparable to ConvLSTM in Table 1. Previously CNN used batch-level FoM (all tile pixels, ~13.4M) giving 0.734; ConvLSTM used pixel-level (1.64M pixels) giving 0.504.",
+  "eval_mask": "counts > 0 AND gt_2015 > 0.01",
+  "change_threshold": 0.01,
+  "prev_builtup_year": 2010,
+  "val_tiles": 821,
+  "convlstm_reference": {
+    "fom_2015": 0.504,
+    "n_eval_pixels": 1640513,
+    "source": "validation_2015_results.json"
+  },
+  "per_seed": {
+    "42": {
+      "seed": "seed42",
+      "fom_2015": 0.6834,
+      "mse_2015": 6.3e-05,
+      "mae_2015": 0.005311,
+      "n_eval_pixels": 1542747,
+      "n_growth": 386623,
+      "eval_mask": "counts>0 & gt_2015>0.01  (identical to validate_2015.py)"
+    },
+    "0": {
+      "seed": "seed0",
+      "fom_2015": 0.7208,
+      "mse_2015": 5.2e-05,
+      "mae_2015": 0.005034,
+      "n_eval_pixels": 1542747,
+      "n_growth": 386623,
+      "eval_mask": "counts>0 & gt_2015>0.01  (identical to validate_2015.py)"
+    }
+  },
+  "summary": {
+    "fom_mean": 0.7021,
+    "fom_std": 0.0187,
+    "gap_over_convlstm": 0.1981
+  },
+  "timestamp": "2026-04-18 12:25:04.905736"
+}

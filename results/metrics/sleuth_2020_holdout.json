@@ -1,0 +1,35 @@
+{
+  "experiment": "sleuth_2020_temporal_holdout",
+  "description": "SLEUTH CA with calibrated parameters (from sota_baselines_results.json) predicts 2020 from 2015 in one step. Same val_tile_indices.json and eval_mask as all other 2020 holdout experiments.",
+  "calibrated_params": {
+    "dispersion": 0.1,
+    "breed": 0.3,
+    "spread": 0.1,
+    "road_gravity": 0.225
+  },
+  "calibration_source": "sota_baselines_results.json (calibrated on 1975\u21921990\u21922000 chain)",
+  "prediction_step": "2015 \u2192 2020 (one step, same 5yr interval as training steps)",
+  "holdout_2020": {
+    "n_eval_pixels": 1574225,
+    "n_growth_pixels": 166446,
+    "pct_growth_pixels": 10.57,
+    "sleuth": {
+      "fom": 0.1207,
+      "mse": 0.000307,
+      "mae": 0.011515,
+      "r2": 0.9563,
+      "growth_mse": 0.000688
+    },
+    "linear": {
+      "fom": 0.053,
+      "mse": 0.00094,
+      "growth_mse": 0.00148
+    },
+    "persistence": {
+      "fom": 0.0,
+      "mse": 0.00024,
+      "growth_mse": 0.000869
+    }
+  },
+  "timestamp": "2026-04-10T12:58:54.517150"
+}

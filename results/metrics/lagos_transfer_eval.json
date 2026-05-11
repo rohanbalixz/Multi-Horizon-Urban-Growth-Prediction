@@ -1,0 +1,39 @@
+{
+  "experiment": "lagos_zero_shot_transfer",
+  "description": "Zero-shot geographic transfer: CONUS-trained SimpleCNN (seed 42, no retraining) evaluated on the Lagos metropolitan region, Nigeria. Built-up density is m\u00b2/m\u00b2, naturally in [0,1]. Volume and population log1p-normalised by the maximum log1p value observed in the Lagos region across all training epochs \u2014 same method as CONUS preprocessing. Eval mask: gt_2015 > 0.01. Change threshold: 0.01.",
+  "model": "SimpleCNN_seed42 (best_cnn_3ch.pth, 74K params)",
+  "region": "Lagos metropolitan area, Nigeria",
+  "bounds_wgs84": {
+    "west": 2.7,
+    "east": 4.3,
+    "south": 5.8,
+    "north": 7.3
+  },
+  "target_crs": "EPSG:32631",
+  "resolution_m": 250,
+  "raster_shape": [
+    665,
+    709
+  ],
+  "n_tiles": 20,
+  "n_eval_pixels": 63840,
+  "n_growth_pixels": 44415,
+  "pct_growth": 69.57,
+  "normalization": {
+    "builtup": "density m\u00b2/m\u00b2 clipped to [0,1]",
+    "volume": "log1p / 12.638270 (Lagos region log1p-max across all train epochs)",
+    "population": "log1p / 7.850564 (Lagos region log1p-max across all train epochs)"
+  },
+  "metrics": {
+    "fom": 0.408,
+    "mse": 0.01572415,
+    "A": 23304,
+    "B": 21111,
+    "C": 7324
+  },
+  "conus_reference": {
+    "cnn_fom_2015_spatial": 0.702,
+    "cnn_fom_2020_temporal": 0.252
+  },
+  "timestamp": "2026-04-30T18:40:30.098304"
+}

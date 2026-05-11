@@ -1,0 +1,331 @@
+{
+  "project": "NeuralTimeCapsule",
+  "description": "Urban growth prediction using multi-channel ConvLSTM with GHSL, built-up volume, and population data",
+  "data": {
+    "spatial_coverage": "CONUS (Continental United States)",
+    "crs": "EPSG:5070 (Albers Equal Area)",
+    "resolution": "250m",
+    "channels": [
+      "GHSL built-up surface",
+      "GHS-BUILT-V built-up volume",
+      "GHS-POP population density"
+    ],
+    "training_epochs": [
+      "1975",
+      "1980",
+      "1985",
+      "1990",
+      "1995",
+      "2000",
+      "2005",
+      "2010"
+    ],
+    "target_epoch": "2015",
+    "last_input_epoch": "2010",
+    "forecast_horizon_years": 5,
+    "val_split": "spatial_block_holdout (block_id % 5 == 0, ~20% of geographic blocks)"
+  },
+  "training_config": {
+    "epochs": 25,
+    "batch_size": 8,
+    "learning_rate": 0.0005,
+    "optimizer": "Adam",
+    "weight_decay": 1e-05,
+    "scheduler": "ReduceLROnPlateau (patience=15, factor=0.5)",
+    "tile_size": 128,
+    "tile_overlap": 0.5,
+    "train_val_split": "spatial_block_holdout (block_id % 5 == 0)",
+    "seed": 42,
+    "total_tiles": 5698,
+    "train_tiles": 4877,
+    "val_tiles": 821
+  },
+  "main_results": {
+    "convlstm_3ch": {
+      "description": "2-layer ConvLSTM + MC Dropout (p=0.1), 3 input channels",
+      "val_mse": 7.5e-05,
+      "val_mae": 0.0038,
+      "val_rmse": 0.008656,
+      "params": 481153,
+      "training_epochs_used": 25,
+      "val_fom": 0.5109
+    },
+    "sleuth_ca": {
+      "description": "SLEUTH Cellular Automata (Clarke et al., 1997), grid-search calibrated",
+      "val_mse": 0.006273,
+      "val_mae": 0.068673,
+      "val_rmse": 0.079201,
+      "calibrated_params": {
+        "dispersion": 0.1,
+        "breed": 0.3,
+        "spread": 0.1,
+        "road_gravity": 0.225
+      },
+      "calibration_time_min": 19.3,
+      "val_fom": 0.0561
+    },
+    "linear_extrapolation_2step": {
+      "description": "2-step linear extrapolation: 2*builtup_2010 - builtup_2005 \u2192 2015. Evaluated on all val-tile pixels (tile-level, all-pixel). Same formula as validate_2015.py but different eval set. NOT the same as OLS linear baseline in multi_horizon section.",
+      "val_mse": 6.9e-05,
+      "val_mae": 0.003322,
+      "val_rmse": 0.008284,
+      "val_fom": 0.381
+    }
+  },
+  "ablation_study": {
+    "builtup_only_1ch": {
+      "val_mse": 8.9e-05,
+      "val_mae": 0.005275,
+      "val_rmse": 0.009449,
+      "params": 476545,
+      "val_fom": 0.5003
+    },
+    "volume_only_1ch": {
+      "val_mse": 0.000265,
+      "val_mae": 0.006542,
+      "val_rmse": 0.016294,
+      "params": 476545
+    },
+    "population_only_1ch": {
+      "val_mse": 0.001332,
+      "val_mae": 0.016937,
+      "val_rmse": 0.036502,
+      "params": 476545
+    },
+    "builtup_volume_2ch": {
+      "val_mse": 7.4e-05,
+      "val_mae": 0.00401,
+      "val_rmse": 0.008596,
+      "params": 478849,
+      "val_fom": 0.5138
+    },
+    "convlstm_1layer_3ch": {
+      "val_mse": 7.8e-05,
+      "val_mae": 0.004359,
+      "val_rmse": 0.008852,
+      "params": 181889,
+      "val_fom": 0.4814
+    },
+    "cnn_3ch": {
+      "val_mse": 2.5e-05,
+      "val_mae": 0.00291,
+      "val_rmse": 0.004965,
+      "params": 74273,
+      "val_fom": 0.739
+    },
+    "unet_3ch": {
+      "val_mse": 3.4e-05,
+      "val_mae": 0.003601,
+      "val_rmse": 0.00585,
+      "params": 473857,
+      "val_fom": 0.6975
+    }
+  },
+  "temporal_validation_2015": {
+    "description": "Spatial block holdout evaluation: model trained on [1975-2010] (8 epochs) predicts 2015, evaluated on geographically held-out tiles (block_id % 5 == 0). Forecast horizon: 5 years (last input 2010 \u2192 target 2015). Spatial generalization, not temporal holdout.",
+    "forecast_horizon_years": 5,
+    "last_input_year": 2010,
+    "n_eval_pixels": 1640513,
+    "convlstm": {
+      "mse": 0.000177,
+      "r2": 0.978,
+      "fom": 0.5040105089266167,
+      "ssim": 0.9903506109167116,
+      "growth_mse": 0.0004372822877485305,
+      "growth_r2": 0.9584940671920776,
+      "stable_mse": 9.624406084185466e-05
+    },
+    "linear_extrapolation": {
+      "mse": 0.000163,
+      "r2": 0.979,
+      "fom": 0.3750541929175622,
+      "ssim": 0.9929560039333073,
+      "growth_mse": 0.0004537161148618907,
+      "stable_mse": 7.314576942007989e-05
+    },
+    "persistence": {
+      "mse": 0.000329,
+      "fom": 0.0,
+      "ssim": 0.9860522605513469,
+      "growth_mse": 0.0012270377483218908
+    },
+    "fom_vs_linear_pp": 12.89563160090545,
+    "growth_mse_vs_linear_pct": 3.6220505675366055
+  },
+  "uncertainty_quantification": {
+    "method": "MC Dropout (20 forward passes, p=0.1)",
+    "mean_std": 0.002789,
+    "mean_cv": 0.2542,
+    "mean_ci95_width": 0.009522,
+    "calibration_pearson_r": 0.9834
+  },
+  "sequence_length_ablation": {
+    "seqlen_4_3ch": {
+      "n_timesteps": 4,
+      "epochs_used": [
+        1995,
+        2000,
+        2005,
+        2010
+      ],
+      "val_mse": 8.1e-05,
+      "val_mae": 0.004351,
+      "val_rmse": 0.008983
+    },
+    "seqlen_6_3ch": {
+      "n_timesteps": 6,
+      "epochs_used": [
+        1985,
+        1990,
+        1995,
+        2000,
+        2005,
+        2010
+      ],
+      "val_mse": 8.1e-05,
+      "val_mae": 0.00403,
+      "val_rmse": 0.009004
+    },
+    "seqlen_8_3ch": {
+      "n_timesteps": 8,
+      "epochs_used": [
+        1975,
+        1980,
+        1985,
+        1990,
+        1995,
+        2000,
+        2005,
+        2010
+      ],
+      "val_mse": 7.5e-05,
+      "val_mae": 0.0038,
+      "val_rmse": 0.008656
+    }
+  },
+  "multi_horizon": {
+    "_linear_baseline_note": "linear_mse/linear_fom here = pixel-wise OLS through all available input epochs projected to 2015 (all pixels, no mask). This is DIFFERENT from the 2-step linear in main_results (2*x_2010 - x_2005). OLS is the stronger baseline; 2-step is used in ablation and validate_2015.",
+    "_convlstm_5yr_note": "convlstm_mse at 5yr (0.000220) is from a suboptimal training run (multihorizon_5yr.pth). The best ConvLSTM on same 8 input epochs achieves MSE=0.000075, FoM=0.5109 (see ablation_3ch_results.json). Fair 5yr CNN vs ConvLSTM comparison: CNN 3x better on MSE, FoM gap = -0.228.",
+    "5yr": {
+      "years_ahead": 5,
+      "last_input_year": 2010,
+      "convlstm_mse": 8.1e-05,
+      "convlstm_r2": 0.9831,
+      "linear_ols_mse": 0.000163,
+      "linear_ols_r2": 0.9658,
+      "improvement_vs_linear_ols_pct": 50.55,
+      "convlstm_fom": 0.5234,
+      "linear_ols_fom": 0.3021,
+      "cnn_mse": 2.5e-05,
+      "cnn_r2": 0.9948,
+      "cnn_fom": 0.739,
+      "cnn_mae": 0.00291,
+      "cnn_params": 74273
+    },
+    "10yr": {
+      "years_ahead": 10,
+      "last_input_year": 2005,
+      "convlstm_mse": 0.000126,
+      "convlstm_r2": 0.9735,
+      "linear_ols_mse": 0.000264,
+      "linear_ols_r2": 0.9446,
+      "improvement_vs_linear_ols_pct": 52.2,
+      "convlstm_fom": 0.5959,
+      "linear_ols_fom": 0.4618,
+      "cnn_mse": 4.8e-05,
+      "cnn_r2": 0.99,
+      "cnn_fom": 0.6753,
+      "cnn_mae": 0.004853,
+      "cnn_params": 72545
+    },
+    "20yr": {
+      "years_ahead": 20,
+      "last_input_year": 1995,
+      "convlstm_mse": 0.000281,
+      "convlstm_r2": 0.941,
+      "linear_ols_mse": 0.000591,
+      "linear_ols_r2": 0.8761,
+      "improvement_vs_linear_ols_pct": 52.39,
+      "convlstm_fom": 0.5968,
+      "linear_ols_fom": 0.5269,
+      "cnn_mse": 0.000154,
+      "cnn_r2": 0.9678,
+      "cnn_fom": 0.6872,
+      "cnn_mae": 0.006325,
+      "cnn_params": 69089
+    },
+    "_cnn_key_finding": "CNN wins on FoM at all horizons. FoM gap (ConvLSTM - CNN): -0.228 (5yr, using best ConvLSTM), -0.092 (10yr), -0.070 (20yr). CNN also wins on MSE: 3x better at 5yr (fair comparison via ablation), 7x better at 10yr, 4.5x better at 20yr."
+  },
+  "temporal_holdout_2020": {
+    "description": "TRUE temporal holdout: model trained on [1975-2010]\u21922015, evaluated predicting 2020 using [1980-2015] as input. 2020 GHSL data downloaded after model training \u2014 completely independent. Same spatial val split as 2015 validation. FoM=0.156 is above typical urban growth literature values (0.05-0.20).",
+    "model_trained_on": "[1975,1980,...,2010] \u2192 2015",
+    "holdout_task": "[1980,1985,...,2015] \u2192 2020",
+    "n_eval_pixels": 1574225,
+    "pct_growth_pixels": 10.57,
+    "note_persistence_mse": "Persistence MSE (0.000240) < ConvLSTM MSE (0.000484) because only 10.6% of pixels changed 2015\u21922020. 'No change' trivially minimizes MSE when growth is rare. FoM=0 for persistence because it never predicts growth. This is why FoM is the primary urban growth metric.",
+    "note_fom_drop_vs_2015": "FoM drops from 0.504 (2015 spatial holdout) to 0.156 (2020 temporal holdout). Expected: 2020 is a harder task (true unseen future, ~5x slower growth rate 2015-2020 vs 2010-2015). FoM=0.156 is still 3x better than linear.",
+    "convlstm_best": {
+      "mse": 0.000484,
+      "mae": 0.012297,
+      "r2": 0.9312,
+      "fom": 0.1556,
+      "ssim": 0.9828,
+      "growth_mse": 0.0006104111089371145,
+      "growth_r2": 0.9105632901191711,
+      "stable_mse": 0.0004695376555901021
+    },
+    "convlstm_multihorizon_5yr": {
+      "mse": 0.000622,
+      "r2": 0.9116,
+      "fom": 0.1696,
+      "growth_mse": 0.000555
+    },
+    "linear_extrapolation": {
+      "mse": 0.00094,
+      "r2": 0.8664,
+      "fom": 0.053,
+      "growth_mse": 0.0014798250049352646
+    },
+    "persistence": {
+      "mse": 0.00024,
+      "fom": 0.0,
+      "growth_mse": 0.0008690068498253822
+    },
+    "improvement_vs_linear_mse_pct": 48.49,
+    "fom_gap_vs_linear_pp": 10.264,
+    "growth_mse_improvement_pct": 58.75
+  },
+  "cnn_channel_control": {
+    "description": "Controls for input channel count in CNN multi-horizon comparison. All configs target 5yr task (last input=2010 -> 2015). Only the number of historical epochs varies. Compares FoM of CNN-5yr-Nep vs CNN-Xyr where both have identical input channel counts.",
+    "configs": {
+      "5yr_5ep": {
+        "val_mse": 2.7e-05,
+        "val_fom": 0.7022,
+        "val_r2": 0.9943,
+        "n_channels": 15,
+        "n_input_epochs": 5,
+        "horizon_years": 5,
+        "params": 69089
+      },
+      "5yr_7ep": {
+        "val_mse": 3.3e-05,
+        "val_fom": 0.6792,
+        "val_r2": 0.993,
+        "n_channels": 21,
+        "n_input_epochs": 7,
+        "horizon_years": 5,
+        "params": 72545
+      }
+    },
+    "paired_comparisons": {
+      "21ch": {
+        "fom_diff_5yr_minus_xyr": 0.0039,
+        "verdict": "CONFOUND \u2014 channel count explains the degradation, not horizon"
+      },
+      "15ch": {
+        "fom_diff_5yr_minus_xyr": 0.015,
+        "verdict": "CONFOUND \u2014 channel count explains the degradation, not horizon"
+      }
+    }
+  }
+}

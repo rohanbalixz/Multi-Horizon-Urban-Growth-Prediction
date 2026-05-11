@@ -1,0 +1,30 @@
+{
+  "experiment": "unet_2020_pixel_filtered",
+  "description": "U-Net 2020 FoM recomputed with eval_mask = (counts>0) & (gt_2020>0.01), matching the CNN and ConvLSTM 2020 evaluation domain exactly. Original unet_2020_holdout.json used DataLoader (all val-tile pixels, 13.4M pixels, 4.0% growth). This recomputation uses 1,574,225 pixels, 10.57% growth \u2014 identical domain to CNN/ConvLSTM.",
+  "model": "SimpleUNet_3ch_flatstack",
+  "model_path": "models/best_unet_3ch.pth",
+  "params": 473857,
+  "eval_mask": "counts>0 & gt_2020>0.01",
+  "n_eval_pixels": 1574225,
+  "n_growth_pixels": 166446,
+  "pct_growth": 10.57,
+  "holdout_2020_filtered": {
+    "fom": 0.229,
+    "mse": 0.00043022,
+    "mae": 0.01132693,
+    "r2": 0.938866,
+    "growth_mse": 0.00056999,
+    "stable_mse": 0.00041369,
+    "A": 76602,
+    "B": 89844,
+    "C": 225845
+  },
+  "comparison_same_domain": {
+    "cnn_seed42_fom": 0.2432,
+    "unet_fom": 0.229,
+    "convlstm_fom": 0.1556,
+    "cnn_unet_gap": 0.0142,
+    "unet_clstm_gap": 0.0734
+  },
+  "timestamp": "2026-04-18 18:37:14.315250"
+}

@@ -1,0 +1,62 @@
+{
+  "experiment": "cnn_channel_count_control",
+  "description": "Controls for input channel count in CNN multi-horizon comparison. All configs target 5yr task (last input=2010 -> 2015). Only the number of historical epochs varies. Compares FoM of CNN-5yr-Nep vs CNN-Xyr where both have identical input channel counts.",
+  "task": "5yr forecast (last_input=2010, target=2015)",
+  "configs": {
+    "5yr_5ep": {
+      "val_mse": 2.7e-05,
+      "val_mae": 0.003081,
+      "val_rmse": 0.005232,
+      "val_r2": 0.9943,
+      "val_fom": 0.7022,
+      "params": 69089,
+      "training_time_min": 83.6,
+      "epochs": 25,
+      "input_epochs": [
+        1990,
+        1995,
+        2000,
+        2005,
+        2010
+      ],
+      "n_input_epochs": 5,
+      "n_channels": 15,
+      "horizon_years": 5,
+      "last_input_year": 2010
+    },
+    "5yr_7ep": {
+      "val_mse": 3.3e-05,
+      "val_mae": 0.003587,
+      "val_rmse": 0.005781,
+      "val_r2": 0.993,
+      "val_fom": 0.6792,
+      "params": 72545,
+      "training_time_min": 71.8,
+      "epochs": 25,
+      "input_epochs": [
+        1980,
+        1985,
+        1990,
+        1995,
+        2000,
+        2005,
+        2010
+      ],
+      "n_input_epochs": 7,
+      "n_channels": 21,
+      "horizon_years": 5,
+      "last_input_year": 2010
+    }
+  },
+  "timestamp": "2026-04-03T23:16:40.717994",
+  "paired_comparisons": {
+    "21ch": {
+      "fom_diff_5yr_minus_xyr": 0.0039,
+      "verdict": "CONFOUND \u2014 channel count explains the degradation, not horizon"
+    },
+    "15ch": {
+      "fom_diff_5yr_minus_xyr": 0.015,
+      "verdict": "CONFOUND \u2014 channel count explains the degradation, not horizon"
+    }
+  }
+}

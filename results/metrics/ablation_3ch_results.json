@@ -1,0 +1,141 @@
+{
+  "date": "2026-03-25T05:24:05.921040",
+  "ablation_builtup_only": {
+    "val_mse": 8.9e-05,
+    "val_mae": 0.005275,
+    "val_rmse": 0.009449,
+    "training_time_min": 1469.4,
+    "epochs": 25,
+    "val_fom": 0.5003,
+    "params": 476545,
+    "vs_convlstm_3ch_error_reduction_pct": 15.7
+  },
+  "ablation_volume_only": {
+    "val_mse": 0.000265,
+    "val_mae": 0.006542,
+    "val_rmse": 0.016294,
+    "training_time_min": 1533.9,
+    "epochs": 25,
+    "params": 476545,
+    "vs_convlstm_3ch_error_reduction_pct": 71.7
+  },
+  "ablation_population_only": {
+    "val_mse": 0.001332,
+    "val_mae": 0.016937,
+    "val_rmse": 0.036502,
+    "training_time_min": 1577.7,
+    "epochs": 25,
+    "params": 476545,
+    "vs_convlstm_3ch_error_reduction_pct": 94.4
+  },
+  "ablation_builtup_volume_2ch": {
+    "val_mse": 7.4e-05,
+    "val_mae": 0.00401,
+    "val_rmse": 0.008596,
+    "training_time_min": 1626.4,
+    "epochs": 25,
+    "val_fom": 0.5138,
+    "params": 478849,
+    "vs_convlstm_3ch_error_reduction_pct": -1.4
+  },
+  "ablation_1layer_3ch": {
+    "val_mse": 7.8e-05,
+    "val_mae": 0.004359,
+    "val_rmse": 0.008852,
+    "training_time_min": 547.4,
+    "epochs": 25,
+    "val_fom": 0.4814,
+    "params": 181889,
+    "vs_convlstm_3ch_error_reduction_pct": 3.8
+  },
+  "baseline_cnn_3ch": {
+    "val_mse": 2.5e-05,
+    "val_mae": 0.00291,
+    "val_rmse": 0.004965,
+    "training_time_min": 73.0,
+    "epochs": 25,
+    "val_fom": 0.739,
+    "params": 74273,
+    "vs_convlstm_3ch_error_reduction_pct": -200.0
+  },
+  "baseline_unet_3ch": {
+    "val_mse": 3.4e-05,
+    "val_mae": 0.003601,
+    "val_rmse": 0.00585,
+    "training_time_min": 91.7,
+    "epochs": 25,
+    "val_fom": 0.6975,
+    "params": 473857,
+    "vs_convlstm_3ch_error_reduction_pct": -120.6
+  },
+  "linear_extrapolation": {
+    "val_mse": 6.9e-05,
+    "val_mae": 0.003322,
+    "val_rmse": 0.008284,
+    "val_fom": 0.381,
+    "vs_convlstm_3ch_error_reduction_pct": -8.7
+  },
+  "seqlen_4_3ch": {
+    "val_mse": 8.1e-05,
+    "val_mae": 0.004351,
+    "val_rmse": 0.008983,
+    "training_time_min": 656.9,
+    "epochs": 25,
+    "val_fom": 0.5174,
+    "params": 481153,
+    "n_timesteps": 4,
+    "epochs_used": [
+      1995,
+      2000,
+      2005,
+      2010
+    ],
+    "vs_convlstm_3ch_error_reduction_pct": 7.4
+  },
+  "seqlen_6_3ch": {
+    "val_mse": 8.1e-05,
+    "val_mae": 0.00403,
+    "val_rmse": 0.009004,
+    "training_time_min": 1018.7,
+    "epochs": 25,
+    "val_fom": 0.4842,
+    "params": 481153,
+    "n_timesteps": 6,
+    "epochs_used": [
+      1985,
+      1990,
+      1995,
+      2000,
+      2005,
+      2010
+    ],
+    "vs_convlstm_3ch_error_reduction_pct": 7.4
+  },
+  "seqlen_8_3ch": {
+    "val_mse": 7.5e-05,
+    "val_mae": 0.0038,
+    "val_rmse": 0.008656,
+    "params": 481153,
+    "n_timesteps": 8,
+    "epochs_used": [
+      1975,
+      1980,
+      1985,
+      1990,
+      1995,
+      2000,
+      2005,
+      2010
+    ],
+    "note": "Main trained model (train_3channel.py)",
+    "vs_convlstm_3ch_error_reduction_pct": 0.0,
+    "val_fom": 0.5040105089266167,
+    "val_fom_source": "validation_2015_results.json \u2014 seqlen_8_3ch IS best_3ch_mc_model.pth (same checkpoint, same val tiles; FoM computed in validate_2015.py)"
+  },
+  "convlstm_3ch": {
+    "val_mse": 7.5e-05,
+    "val_mae": 0.0038,
+    "val_rmse": 0.008656,
+    "params": 481153
+  }
+}

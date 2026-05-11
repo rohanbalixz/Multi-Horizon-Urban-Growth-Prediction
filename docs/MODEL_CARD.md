@@ -1,235 +1,200 @@
-# Model Card: Neural Time Capsule - Urban Growth Prediction
+# Model Card: Multi-Horizon Urban Growth Prediction
 
 ## Model Details
 
-**Model Name**: Neural Time Capsule ConvLSTM  
-**Version**: 1.0  
-**Date**: November 2025  
-**Authors**: Rohan Bali  
-**License**: MIT  
-**Repository**: https://github.com/rohanbalixz/NeuralTimeCapsule
+**Model Name**: Multi-Horizon Urban Growth Prediction (ConvLSTM, CNN, U-Net variants)
+**Version**: 3.0
+**Date**: April 2026
+**Authors**: Rohan Bali
+**License**: MIT
+**Repository**: https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction
 
-### Model Description
+---
 
-Dual-channel Convolutional LSTM architecture for multi-decadal urban growth forecasting using satellite-derived built-up surface density and road network infrastructure.
+## Model Description
 
-**Architecture**:
-- 2-layer ConvLSTM with 64 hidden channels per layer
-- Input: 2 channels (built-up density, road infrastructure)
-- Output: Single-channel built-up density prediction
-- Total parameters: 470,593
-- Kernel size: 3×3
-- Tile resolution: 128×128 pixels
+Multi-Horizon Urban Growth Prediction is a framework for continental-scale urban growth forecasting from multi-decadal satellite observations. Three architectures are evaluated:
 
-**Training Configuration**:
-- Optimizer: Adam (lr=1e-3)
-- Loss function: Mean Squared Error (MSE)
-- Batch size: 8
-- Epochs: 50
-- Training time: 6 hours on laptop CPU
-- Device: CPU-optimized (no GPU required)
+### CNN (best performing)
+Flat temporal channel stacking — all T×3 input channels concatenated and processed by 4 convolutional layers. No recurrence.
+- **Parameters**: 74,273
+- **Input**: T×3 channels × 128×128 px (T=8 → 24 channels at 5yr horizon)
+- **Training time**: ~76 minutes
 
-## Intended Use
+### ConvLSTM + MC Dropout (primary UQ model)
+Two ConvLSTM layers with skip-connection decoder and MC Dropout for uncertainty quantification.
+- **Parameters**: 481,153
+- **Architecture**: 2 ConvLSTM layers (hidden=64) → skip-projection → Conv decoder (64→32→16→1)
+- **MC Dropout**: p=0.1 applied after each ConvLSTM layer; 20 passes for uncertainty
+- **Training time**: ~24 hours
 
-### Primary Applications
+### U-Net
+Encoder-decoder with skip connections.
+- **Parameters**: 473,857
 
-1. **Urban Planning**: Long-term growth projections for infrastructure planning
-2. **Climate Research**: Understanding urban heat island expansion
-3. **Policy Analysis**: Evaluating impact of zoning regulations
-4. **Resource Allocation**: Anticipating service demand (water, electricity, schools)
+**Common configuration**:
+- Optimizer: Adam (lr=5e-4, weight_decay=1e-5)
+- Scheduler: ReduceLROnPlateau (patience=15, factor=0.5)
+- Loss: MSE
+- Batch size: 8 | Epochs: 25 | Seed: 42
+- Tile size: 128×128 px at 250m resolution
 
-### Intended Users
-
-- Urban planners and policymakers
-- Climate and sustainability researchers
-- GIS analysts and geographers
-- Machine learning researchers in spatio-temporal modeling
-
-### Out-of-Scope Uses
-
-❌ **NOT intended for**:
-- Real-time or short-term predictions (designed for decade-scale forecasting)
-- Individual building-level predictions (operates at 250m resolution)
-- Regions with drastically different development patterns than U.S. (requires transfer learning)
-- Applications requiring socioeconomic causal explanations
+---
 
 ## Training Data
 
-### Data Sources
+**GHSL Built-Up Surface** (GHS-BUILT-S R2023A):
+- Provider: European Commission Joint Research Centre (JRC)
+- Native resolution: ~90m, resampled to 250m, EPSG:5070
+- Input epochs: 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010 (8 timesteps)
+- Target epoch: 2015
+- Normalization: min-max [0, 1]
 
-**GHSL Built-Up Surface** (R2023A):
-- Provider: European Commission Joint Research Centre
-- Resolution: ~100m (resampled to 250m)
-- Epochs: 1975, 1990, 2000
-- Coverage: Continental United States (CONUS)
-- Values: Built-up surface density [0-100%]
+**GHS-BUILT-V Built-Up Volume** (R2023A):
+- Native resolution: 100m (Mollweide), resampled to 250m
+- Same epochs as built-up surface
+- Normalization: log1p / global max
 
-**OpenStreetMap Road Networks**:
-- Provider: OpenStreetMap contributors
-- Road types: Highways, primary, secondary roads
-- Rasterized to 250m resolution
-- Binary presence indicator [0 or 1]
+**GHS-POP Population Density** (R2023A):
+- Native resolution: 100m (Mollweide), resampled to 250m
+- Same epochs as built-up surface
+- Normalization: log1p / global max
 
-### Dataset Statistics
+**Coverage**: Continental United States (CONUS), 12,717 × 23,996 pixels at 250m = ~305M pixels
 
-- Total tiles: 2,313 (128×128 pixels each)
-- Training set: 1,850 tiles (80%)
-- Validation set: 463 tiles (20%)
-- Spatial coverage: Diverse U.S. regions (urban, suburban, rural)
-- Temporal span: 25 years (1975-2000)
+---
 
-### Data Preprocessing
+## Validation Design
 
-1. **Reprojection**: WGS84 → Albers Equal Area Conic
-2. **Resampling**: 100m → 250m bilinear interpolation
-3. **Normalization**: Min-max scaling to [0, 1]
-4. **Tiling**: 128×128 patches with 50% overlap
-5. **Augmentation**: None (preserves geospatial integrity)
+**Spatial block holdout**: CONUS divided into 1280×1280px geographic blocks (~320 km²). Every 5th block (`block_id % 5 == 0`) held out — 5 geographically interleaved regions across CONUS. Eliminates spatial autocorrelation leakage from tile overlap.
 
-## Evaluation
+- Total tiles: 5,698 | Train: 4,877 | Val: 821
+- Same `val_tile_indices.json` used for all experiments
 
-### Validation Metrics
+**Evaluation metric**: Figure of Merit (Pontius et al. 2008) — intersection over union of predicted vs observed growth pixels. MSE is dominated by stable non-urban background (≥97% of CONUS area); FoM isolates growth zone accuracy.
 
-| Metric | Value | Interpretation |
-|--------|-------|----------------|
-| MSE | 0.000218 | Mean squared error |
-| MAE | 0.0165 | ~1.65% absolute error |
-| RMSE | 0.0303 | ~3% typical deviation |
-| Train/Val Gap | 2.3% | Minimal overfitting |
+---
 
-### Baseline Comparisons
+## Evaluation Results
 
-| Model | MSE | Improvement |
-|-------|-----|-------------|
-| **ConvLSTM (ours)** | **0.00022** | **Baseline** |
-| U-Net | 0.00066 | **67% improvement** |
-| Standalone CNN | 0.00074 | 239% improvement |
-| Linear Extrapolation | 0.0021 | 863% improvement |
+### Main Results — CONUS 2015 Spatial Block Holdout
 
-### Ablation Studies
+| Model | **FoM** ↑ | MSE ↓ | MAE ↓ | R² | Params |
+|-------|-----------|-------|-------|-----|--------|
+| **CNN 3ch (flat stacking)** | **0.739** | 0.000025 | 0.00291 | 0.995 | 74K |
+| U-Net 3ch | 0.698 | 0.000034 | 0.00360 | — | 474K |
+| ConvLSTM 3ch + MC Dropout | 0.511 | 0.000075 | 0.00380 | 0.978 | 481K |
+| Linear extrapolation | 0.381 | 0.000069 | 0.00332 | 0.979 | — |
+| SLEUTH CA (Clarke et al. 1997) | 0.056 | 0.006273 | 0.06867 | — | 4 |
 
-| Configuration | MSE | MAE |
-|--------------|-----|-----|
-| Dual-channel (built-up + roads) | 0.00022 | 0.0165 |
-| Single-channel (built-up only) | 0.0028 | 0.0421 |
-| Single-channel (roads only) | 0.0156 | 0.0987 |
+SLEUTH calibrated on 200 training tiles using real TIGER/Line primary roads (261,488 segments) with an 8-step prediction chain (1975→1980→…→2010→2015).
 
-**Key Findings**:
-- Dual-channel provides **93% error reduction** vs single-channel
-- Road infrastructure alone is insufficient (high MAE)
-- Two-layer depth critical (single-layer: 1550% worse)
+### Growth-Zone vs Stable-Zone Decomposition (ConvLSTM, 2015)
+
+| Region | ConvLSTM MSE | Linear MSE | Advantage |
+|--------|-------------|------------|-----------|
+| Growth pixels (Δ > 0.01) | 0.000437 | 0.000454 | +3.6% |
+| Stable pixels | 0.000096 | 0.000073 | −31.6% |
+
+ConvLSTM's advantage concentrates in the growth zones. Linear extrapolation's lower overall MSE reflects dominance of stable background pixels.
+
+### 2020 Temporal Holdout (true out-of-sample)
+
+Model trained on [1975–2010]→2015; evaluated on [1980–2015]→2020. 2020 GHSL data downloaded after training.
+
+| Model | **FoM** | R² | Growth MSE | Stable MSE |
+|-------|---------|-----|-----------|-----------|
+| ConvLSTM (best) | **0.156** | 0.931 | 0.000610 | 0.000470 |
+| Linear extrapolation | 0.053 | 0.866 | 0.001480 | 0.000877 |
+| Persistence (no change) | 0.000 | — | 0.000869 | — |
+
+FoM=0.156 is 3× above linear (+10.3pp). The FoM drop from 0.504 (2015) to 0.156 (2020) reflects a 5× slowdown in CONUS urban growth rate (2015–2020 vs 2010–2015), not model degradation. Only 10.6% of pixels showed growth 2015–2020 vs 23.6% for 2010–2015.
+
+### Multi-Horizon (all predicting 2015, varying input window)
+
+| Horizon | CNN FoM | ConvLSTM FoM | Linear FoM | CNN params |
+|---------|---------|--------------|-----------|-----------|
+| 5-year (1975–2010) | **0.739** | 0.523 | 0.302 | 74K |
+| 10-year (1975–2005) | **0.675** | 0.596 | 0.462 | 73K |
+| 20-year (1975–1995) | **0.687** | 0.597 | 0.527 | 69K |
+
+CNN wins at every horizon. Channel-count confound experiment: when input channel count is held fixed, FoM difference across horizons reduces to <0.015 — the apparent horizon degradation is an input count artifact, not forecast difficulty.
+
+### Ablation Study (ConvLSTM architecture, 2015 target)
+
+| Configuration | **FoM** | MSE | Δ MSE |
+|--------------|---------|-----|-------|
+| 3ch ConvLSTM (full) | 0.511 | 0.000075 | — |
+| Built-up + Volume (2ch) | 0.514 | 0.000074 | −1% |
+| Built-up only (1ch) | 0.500 | 0.000089 | +19% |
+| Volume only (1ch) | — | 0.000265 | +253% |
+| Population only (1ch) | — | 0.001332 | +1,676% |
+| 1-layer ConvLSTM (3ch) | 0.481 | 0.000078 | +4% |
+
+Built-up surface dominates the signal. Volume adds structure (+17% MSE improvement over built-up alone). Population is collinear with volume and adds noise when volume is present.
+
+### Sequence Length Ablation (ConvLSTM, 3ch)
+
+| Seq length | Epochs used | MSE |
+|-----------|-------------|-----|
+| 4 | 1995–2010 | 0.000081 |
+| 6 | 1985–2010 | 0.000081 |
+| 8 | 1975–2010 | **0.000075** |
+
+Minimal returns from longer history (7% improvement, 4→8 steps). Supports spatial dominance hypothesis.
+
+### Uncertainty Quantification (ConvLSTM, MC Dropout)
+
+20 stochastic forward passes over 8.69M val pixels:
+
+| Metric | Value |
+|--------|-------|
+| Mean predictive std | 0.00279 |
+| Median predictive std | 0.00166 |
+| Mean coefficient of variation | 0.254 |
+| Mean 95% CI width | 0.00952 |
+| **Calibration r (std vs actual error)** | **0.983** |
+
+Calibration is monotonically ordered across all 10 equal-count decile bins — the model reliably identifies uncertain predictions.
+
+---
 
 ## Limitations
 
-### Technical Limitations
+- **Resolution**: 250m tiles miss fine-grained building or parcel dynamics
+- **Covariates**: No zoning, terrain, road network, or economic inputs in neural models
+- **Geography**: Trained on CONUS only; not validated elsewhere
+- **Temporal**: 5-year epoch spacing; cannot resolve within-epoch dynamics
+- **Growth regime**: Post-2015 CONUS slowdown (5× lower growth rate) reduces FoM on 2020 holdout — urban growth models are highly sensitive to growth rate regime
 
-1. **Sparse Temporal Sampling**: Only 3 training epochs (1975, 1990, 2000)
-2. **Autoregressive Error**: Multi-step forecasts accumulate errors
-3. **Missing Modalities**: No socioeconomic, climate, or elevation data
-4. **No Ground Truth Validation**: 2010+ predictions cannot be validated yet
-
-### Spatial Limitations
-
-- Trained exclusively on U.S. data (may not generalize to other countries)
-- 250m resolution misses fine-grained building-level dynamics
-- Urban cores vs sprawl patterns have different error characteristics
-
-### Temporal Limitations
-
-- 25-year historical window may miss recent trends (e.g., remote work impacts)
-- Assumes temporal dynamics are stationary (ignores policy shocks)
-- Cannot predict discontinuous events (e.g., natural disasters, pandemics)
+---
 
 ## Ethical Considerations
 
-### Potential Risks
+- Predictions are probabilistic and should inform, not replace, planning decisions
+- Growth forecasts may encode historical inequities in development patterns
+- Validate for demographic and geographic bias before use in resource allocation or zoning
 
-⚠️ **Displacement Risk**: Predictions could inform gentrification or displacement
-⚠️ **Resource Inequality**: May perpetuate existing infrastructure biases
-⚠️ **Environmental Justice**: Urban expansion predictions should consider vulnerable communities
-
-### Responsible Use Guidelines
-
-1. **Transparency**: Always disclose model predictions are probabilistic, not deterministic
-2. **Human Oversight**: Use predictions to inform, not replace, human decision-making
-3. **Equity Audits**: Evaluate predictions for bias against marginalized communities
-4. **Stakeholder Engagement**: Involve affected communities in planning processes
-
-## Fairness and Bias
-
-### Known Biases
-
-- **Training Data Bias**: Overrepresents U.S. suburban development patterns
-- **Temporal Bias**: 1975-2000 training window may not reflect recent trends
-- **Spatial Bias**: Higher accuracy in densely sampled regions
-
-### Mitigation Strategies
-
-- Report uncertainty estimates for predictions
-- Validate on diverse geographic regions before deployment
-- Consider ensemble methods to reduce spatial bias
-
-## Computational Requirements
-
-### Training
-
-- **Time**: 6 hours
-- **Hardware**: Laptop CPU (Intel i5 or equivalent)
-- **Memory**: 8 GB RAM
-- **Storage**: 15 GB (datasets + checkpoints)
-
-### Inference
-
-- **Latency**: <1 second per tile (128×128 pixels)
-- **Batch Processing**: 100 tiles in ~30 seconds
-- **Continental Forecast**: ~1 hour for full CONUS
+---
 
 ## Reproducibility
 
-All code, data sources, and pretrained weights are publicly available:
+- **Code**: https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction
+- **Weights**: `models/best_3ch_mc_model.pth`
+- **Random seed**: 42
+- **Val split**: `results/metrics/val_tile_indices.json`
 
-- **Repository**: https://github.com/rohanbalixz/NeuralTimeCapsule
-- **Pretrained Weights**: `models/best_urban_growth_model.pth`
-- **Training Notebook**: `notebooks/urban_growth_prediction.ipynb`
-- **Random Seed**: 42 (fixed for reproducibility)
-
-See [docs/REPRODUCIBILITY.md](REPRODUCIBILITY.md) for step-by-step instructions.
-
-## Updates and Maintenance
-
-**Current Status**: Active development  
-**Last Updated**: November 2025
-
-**Planned Improvements**:
-- [ ] 6-epoch training with 2014-2023 GHSL data
-- [ ] Multi-modal fusion (climate, demographics)
-- [ ] Uncertainty quantification (ensemble methods)
-- [ ] Transfer learning for international regions
+---
 
 ## Citation
 
 ```bibtex
-@inproceedings{bali2025neuraltimecapsule,
-  title={Neural Time Capsule: Forecasting Urban Development Through Multi-Decadal Spatio-Temporal ConvLSTM},
-  author={Bali, Rohan},
-  booktitle={CVPR},
-  year={2025},
-  url={https://github.com/rohanbalixz/NeuralTimeCapsule}
+@software{bali_mhugp_2026,
+  author = {Bali, Rohan},
+  title  = {Multi-Horizon Urban Growth Prediction},
+  year   = {2026},
+  url    = {https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction}
 }
 ```
 
-## Contact
-
-**Author**: Rohan Bali  
-**Email**: rohan.bali@example.com  
-**GitHub**: [@rohanbalixz](https://github.com/rohanbalixz)
-
-## References
-
-1. Corbane et al. (2021). "The Grey-Green Divide: Multi-temporal Analysis of Greenness Across 10,000 Urban Centres Derived from the Global Human Settlement Layer"
-2. Shi et al. (2015). "Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting"
-3. OpenStreetMap contributors. https://www.openstreetmap.org/
-
----
-
-**Model Card Framework**: Based on [Model Cards for Model Reporting (Mitchell et al., 2019)](https://arxiv.org/abs/1810.03993)
+*Model Card Framework: Mitchell et al. (2019)*

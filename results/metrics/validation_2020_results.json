@@ -1,0 +1,73 @@
+{
+  "experiment": "2020_temporal_holdout_validation",
+  "description": "True temporal holdout: model trained on [1975-2010]\u21922015 predicts 2020. Input window shifted by one epoch: [1980-2015] \u2192 2020. 2020 GHSL data was downloaded AFTER model training \u2014 completely independent. Evaluation on spatially held-out val tiles (same block split as 2015 validation).",
+  "model": "3ch_ConvLSTM_MCDropout_SkipDecoder",
+  "model_path": "models/best_3ch_mc_model.pth",
+  "model_trained_on": "[1975,1980,...,2010] \u2192 2015",
+  "holdout_task": "[1980,1985,...,2015] \u2192 2020",
+  "split_method": "spatial_block_holdout (same val_tile_indices.json as 2015 validation)",
+  "input_epochs": [
+    1980,
+    1985,
+    1990,
+    1995,
+    2000,
+    2005,
+    2010,
+    2015
+  ],
+  "target_year": 2020,
+  "last_input_year": 2015,
+  "n_val_tiles": 821,
+  "n_eval_pixels": 1574225,
+  "n_obs_growth_pixels": 166446,
+  "pct_growth": 10.57,
+  "change_threshold": 0.01,
+  "convlstm_best": {
+    "mse": 0.0004844324430450797,
+    "mae": 0.012297171168029308,
+    "rmse": 0.022009826056674772,
+    "r2": 0.9311621785163879,
+    "fom": 0.1555963859182818,
+    "ssim": 0.9828237873158385,
+    "growth_mse": 0.0006104111089371145,
+    "growth_mae": 0.01672925241291523,
+    "growth_r2": 0.9105632901191711,
+    "stable_mse": 0.0004695376555901021,
+    "tile_mse_mean": 0.00019896223899106976,
+    "tile_mse_std": 0.0002789327977504706,
+    "n_tiles": 803
+  },
+  "convlstm_multihorizon_5yr": {
+    "mse": 0.0006217561312951148,
+    "mae": 0.014198698103427887,
+    "r2": 0.9116485118865967,
+    "fom": 0.16957414330438225,
+    "growth_mse": 0.0005550585337914526,
+    "note": "Same architecture, trained independently for 5yr horizon task"
+  },
+  "linear_extrapolation": {
+    "mse": 0.0009403884178027511,
+    "mae": 0.018021829426288605,
+    "rmse": 0.030665753175207536,
+    "r2": 0.8663709163665771,
+    "method": "2*builtup_2015 - builtup_2010",
+    "fom": 0.05295152958584959,
+    "ssim": 0.9695302802090652,
+    "growth_mse": 0.0014798250049352646,
+    "stable_mse": 0.0008766093524172902
+  },
+  "persistence": {
+    "mse": 0.00024011328059714288,
+    "mae": 0.008878529071807861,
+    "method": "builtup_2015 unchanged",
+    "fom": 0.0,
+    "ssim": 0.9902138086045977,
+    "growth_mse": 0.0008690068498253822
+  },
+  "improvement_convlstm_vs_linear_mse_pct": 48.49,
+  "improvement_convlstm_vs_persist_mse_pct": -101.75,
+  "fom_gap_vs_linear_pp": 10.264,
+  "growth_mse_improvement_pct": 58.75,
+  "timestamp": "2026-04-08 14:05:17.826640"
+}

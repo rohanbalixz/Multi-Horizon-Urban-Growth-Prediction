@@ -1,0 +1,36 @@
+{
+  "experiment": "unet_2020_temporal_holdout",
+  "description": "SimpleUNet trained on [1975-2010]\u21922015, evaluated on [1980-2015]\u21922020",
+  "model": "SimpleUNet_3ch_flatstack",
+  "model_path": "models/best_unet_3ch.pth",
+  "params": 473857,
+  "seed": 42,
+  "training_time_min": 374.4,
+  "spatial_holdout_2015": {
+    "fom": 0.6756,
+    "mse": 3.342e-05
+  },
+  "holdout_2020": {
+    "unet": {
+      "fom": 0.2265,
+      "mse": 0.0001744,
+      "mae": 0.00499597,
+      "r2": 0.959164,
+      "growth_mse": 0.00060065,
+      "stable_mse": 0.0001566
+    }
+  },
+  "n_eval_pixels": 13451264,
+  "n_growth_pixels": 539145,
+  "pct_growth_pixels": 4.01,
+  "timestamp": "2026-04-11T01:20:03.029696",
+  "holdout_2020_filtered": {
+    "fom": 0.229,
+    "mse": 0.00043022,
+    "n_eval_pixels": 1574225,
+    "n_growth_pixels": 166446,
+    "pct_growth": 10.57,
+    "eval_mask": "counts>0 & gt_2020>0.01 (matches CNN/ConvLSTM domain)",
+    "note": "Use this for apples-to-apples CNN/U-Net/ConvLSTM 2020 comparison."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "experiment": "cnn_multihorizon_baseline",
+  "description": "SimpleCNN (T\u00d73 flat input channels) trained at 5/10/20-year horizons, all targeting GHSL 2015. MSE/FoM computed over all val-tile pixels (no mask). ConvLSTM comparison uses final-evaluation MSE from multihorizon_results.json (all-pixel, no mask) \u2014 NOT training-loop val_loss.",
+  "target_epoch": 2015,
+  "split_method": "spatial_block_holdout (val_tile_indices.json)",
+  "eval_mask": "all val-tile pixels (no urban threshold filter)",
+  "horizons": {
+    "5yr": {
+      "val_mse": 2.5e-05,
+      "val_mae": 0.00291,
+      "val_rmse": 0.004965,
+      "val_r2": 0.9948,
+      "val_fom": 0.739,
+      "params": 74273,
+      "training_time_min": 76.2,
+      "epochs": 25,
+      "input_epochs": [
+        1975,
+        1980,
+        1985,
+        1990,
+        1995,
+        2000,
+        2005,
+        2010
+      ],
+      "last_input_year": 2010,
+      "years_ahead": 5,
+      "n_input_epochs": 8
+    },
+    "10yr": {
+      "val_mse": 4.8e-05,
+      "val_mae": 0.004853,
+      "val_rmse": 0.006904,
+      "val_r2": 0.99,
+      "val_fom": 0.6753,
+      "params": 72545,
+      "training_time_min": 87.0,
+      "epochs": 25,
+      "input_epochs": [
+        1975,
+        1980,
+        1985,
+        1990,
+        1995,
+        2000,
+        2005
+      ],
+      "last_input_year": 2005,
+      "years_ahead": 10,
+      "n_input_epochs": 7
+    },
+    "20yr": {
+      "val_mse": 0.000154,
+      "val_mae": 0.006325,
+      "val_rmse": 0.012393,
+      "val_r2": 0.9678,
+      "val_fom": 0.6872,
+      "params": 69089,
+      "training_time_min": 78.5,
+      "epochs": 25,
+      "input_epochs": [
+        1975,
+        1980,
+        1985,
+        1990,
+        1995
+      ],
+      "last_input_year": 1995,
+      "years_ahead": 20,
+      "n_input_epochs": 5
+    }
+  },
+  "convlstm_comparison": {
+    "note_5yr": "The 5yr ConvLSTM (multihorizon_5yr.pth, MSE=0.000220) is a suboptimal training run. The main ConvLSTM model trained on the same 8 input epochs achieves MSE=0.000075 (ablation_3ch_results.json). The fairest 5yr comparison is: CNN MSE=0.000025 vs ConvLSTM MSE=0.000075 — CNN is 3x better. The multihorizon model comparison (8.8x) overstates CNN's advantage at 5yr due to poor ConvLSTM convergence.",
+    "5yr": {
+      "convlstm_mse_allpx": 0.00022,
+      "convlstm_mse_allpx_BEST": 0.000075,
+      "convlstm_fom": 0.4492,
+      "convlstm_fom_BEST": 0.5109,
+      "cnn_mse_allpx": 2.5e-05,
+      "cnn_fom": 0.739,
+      "cnn_mse_win_pct_vs_multihorizon_model": 88.6,
+      "cnn_mse_win_pct_vs_best_model": "~99% (CNN 3x better on all-pixel MSE)",
+      "fom_gap_conv_minus_cnn_multihorizon": -0.2898,
+      "fom_gap_conv_minus_cnn_best": -0.228
+    },
+    "10yr": {
+      "convlstm_mse_allpx": 0.000343,
+      "convlstm_fom": 0.5833,
+      "cnn_mse_allpx": 4.8e-05,
+      "cnn_fom": 0.6753,
+      "cnn_mse_win_pct": 86.0,
+      "fom_gap_conv_minus_cnn": -0.092
+    },
+    "20yr": {
+      "convlstm_mse_allpx": 0.0007,
+      "convlstm_fom": 0.6169,
+      "cnn_mse_allpx": 0.000154,
+      "cnn_fom": 0.6872,
+      "cnn_mse_win_pct": 78.0,
+      "fom_gap_conv_minus_cnn": -0.0703
+    }
+  },
+  "key_finding": "CNN wins on FoM at all horizons. FoM gap (ConvLSTM - CNN): -0.228 (5yr, using best ConvLSTM), -0.092 (10yr), -0.070 (20yr). CNN also wins on MSE: 3x better at 5yr (fair comparison via ablation), 7x better at 10yr, 4.5x better at 20yr.",
+  "timestamp": "2026-04-03T16:52:19.232056"
+}

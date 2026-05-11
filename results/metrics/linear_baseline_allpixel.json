@@ -1,0 +1,27 @@
+{
+  "description": "All-pixel linear baseline per horizon",
+  "eval_mask": "none (all pixels)",
+  "horizons": {
+    "5yr": {
+      "mse": 0.000163,
+      "mae": 0.0042,
+      "rmse": 0.012768,
+      "r2": 0.9658,
+      "fom": 0.3021
+    },
+    "10yr": {
+      "mse": 0.000264,
+      "mae": 0.004836,
+      "rmse": 0.016256,
+      "r2": 0.9446,
+      "fom": 0.4618
+    },
+    "20yr": {
+      "mse": 0.000591,
+      "mae": 0.007726,
+      "rmse": 0.024304,
+      "r2": 0.8761,
+      "fom": 0.5269
+    }
+  }
+}

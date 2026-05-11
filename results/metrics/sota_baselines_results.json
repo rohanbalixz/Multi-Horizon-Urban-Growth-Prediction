@@ -1,0 +1,22 @@
+{
+  "date": "2026-04-09T15:37:38.551549",
+  "sleuth_ca": {
+    "val_mse": 0.006273,
+    "val_mae": 0.068673,
+    "val_rmse": 0.079201,
+    "val_fom": 0.0561,
+    "calibration_mse": 0.000802,
+    "calibrated_params": {
+      "dispersion": 0.1,
+      "breed": 0.3,
+      "spread": 0.1,
+      "road_gravity": 0.225
+    },
+    "training_time_min": 19.3,
+    "params": 4,
+    "road_input": "TIGER/Line primary roads (real)",
+    "prediction_chain": "8-step: 1975\u21921980\u21921985\u21921990\u21921995\u21922000\u21922005\u21922010\u21922015",
+    "calibration_tiles": 200,
+    "vs_convlstm_3ch_pct": 98.8
+  }
+}

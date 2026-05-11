@@ -1,0 +1,65 @@
+{
+  "experiment": "cnn_2020_temporal_holdout",
+  "description": "SimpleCNN trained on [1975-2010]\u21922015, evaluated on [1980-2015]\u21922020. True temporal holdout: same architecture (24 input channels), same val split, 2020 GHSL data completely independent of training.",
+  "training": {
+    "model": "SimpleCNN_3ch_flat_stacking",
+    "train_epochs": [
+      1975,
+      1980,
+      1985,
+      1990,
+      1995,
+      2000,
+      2005,
+      2010
+    ],
+    "target_epoch": 2015,
+    "input_channels": 24,
+    "params": 74273,
+    "num_epochs": 25,
+    "best_val_mse_2015": 2.8e-05,
+    "cnn_2015_fom": 0.686,
+    "training_time_min": 73.6
+  },
+  "holdout_2020": {
+    "input_epochs": [
+      1980,
+      1985,
+      1990,
+      1995,
+      2000,
+      2005,
+      2010,
+      2015
+    ],
+    "target_epoch": 2020,
+    "n_eval_pixels": 1574225,
+    "n_growth_pixels": 166446,
+    "pct_growth_pixels": 10.57,
+    "cnn": {
+      "fom": 0.2432,
+      "mse": 0.00049,
+      "mae": 0.011607,
+      "r2": 0.9303,
+      "growth_mse": 0.000535,
+      "stable_mse": 0.000485
+    },
+    "linear": {
+      "fom": 0.053,
+      "mse": 0.00094,
+      "mae": 0.018022,
+      "growth_mse": 0.00148
+    },
+    "persistence": {
+      "fom": 0.0,
+      "mse": 0.00024,
+      "growth_mse": 0.000869
+    },
+    "improvement_vs_linear": {
+      "fom_ratio": 4.592,
+      "growth_mse_improvement_pct": 63.8,
+      "overall_mse_improvement_pct": 47.8
+    }
+  },
+  "timestamp": "2026-04-09T22:26:38.903848"
+}

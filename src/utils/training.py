@@ -26,7 +26,7 @@ class Trainer:
         learning_rate (float): Initial learning rate
         checkpoint_dir (Path): Directory for saving checkpoints
     """
-    def __init__(self, model, device='cpu', learning_rate=1e-3, checkpoint_dir='checkpoints'):
+    def __init__(self, model, device='cpu', learning_rate=5e-4, checkpoint_dir='checkpoints'):
         self.model = model.to(device)
         self.device = device
         self.optimizer = Adam(model.parameters(), lr=learning_rate)

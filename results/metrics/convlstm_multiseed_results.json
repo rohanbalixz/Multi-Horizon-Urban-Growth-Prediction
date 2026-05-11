@@ -1,0 +1,55 @@
+{
+  "experiment": "convlstm_multiseed",
+  "description": "ConvLSTM trained with seeds 0 and 42; same architecture, same val tiles",
+  "architecture": "ConvLSTM_3ch_MCDropout_SkipDecoder",
+  "params": 481153,
+  "per_seed": {
+    "0": {
+      "fom_2015": 0.5085,
+      "mse_2015": 7.6e-05,
+      "model_path": "models/best_3ch_mc_model_seed0.pth",
+      "training_time_hrs": 32.77,
+      "fom_2015_pixlevel": 0.5076,
+      "mse_2015_pixlevel": 0.000185,
+      "n_eval_pixels": 1542747,
+      "eval_mask": "counts>0 & gt_2015>0.01"
+    },
+    "42": {
+      "fom_2015": 0.504,
+      "mse_2015": 0.000177,
+      "model_path": "models/best_3ch_mc_model.pth",
+      "source": "validation_2015_results.json",
+      "fom_2015_pixlevel": 0.5078,
+      "mse_2015_pixlevel": 0.000185,
+      "n_eval_pixels": 1542747,
+      "eval_mask": "counts>0 & gt_2015>0.01 (float32)"
+    }
+  },
+  "summary": {
+    "n_seeds": 2,
+    "seeds": [
+      0,
+      42
+    ],
+    "fom_2015_mean": 0.5063,
+    "fom_2015_std": 0.0023,
+    "fom_2015_min": 0.504,
+    "fom_2015_max": 0.5085,
+    "mse_2015_mean": 0.000126,
+    "mse_2015_std": 5e-05
+  },
+  "interpretation": {
+    "cnn_fom_2015_mean": 0.734,
+    "cnn_fom_2015_std": 0.007,
+    "note": "If ConvLSTM std is small relative to CNN-ConvLSTM FoM gap (0.172-0.235), architecture finding is fully robust to seed choice."
+  },
+  "timestamp": "2026-04-18 13:54:04.954378",
+  "summary_pixlevel": {
+    "fom_2015_mean": 0.5077,
+    "fom_2015_std": 0.0001,
+    "mse_2015_mean": 0.000185,
+    "mse_2015_std": 0.0,
+    "n_eval_pixels": 1542747,
+    "eval_mask": "counts>0 & gt_2015>0.01 (float32, all evals consistent)"
+  }
+}

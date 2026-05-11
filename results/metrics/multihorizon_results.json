@@ -1,0 +1,114 @@
+{
+  "experiment": "multihorizon_forecasting",
+  "description": "ConvLSTM trained separately at 5/10/20-year horizons, all targeting GHSL 2015. Linear baseline: pixel-wise least-squares regression projected to 2015.",
+  "target_epoch": 2015,
+  "split_method": "spatial_block_holdout (val_tile_indices.json)",
+  "architecture": "ConvLSTM(input_channels=3, hidden_channels=64, num_layers=2, mc_dropout=0.1)",
+  "horizons": {
+    "5yr": {
+      "horizon": "5yr",
+      "years_ahead": 5,
+      "input_epochs": [
+        1975,
+        1980,
+        1985,
+        1990,
+        1995,
+        2000,
+        2005,
+        2010
+      ],
+      "last_input_year": 2010,
+      "target_year": 2015,
+      "n_input_epochs": 8,
+      "convlstm": {
+        "val_mse": 8.1e-05,
+        "val_mae": 0.004092,
+        "val_rmse": 0.008978,
+        "val_fom": 0.5234,
+        "r2": 0.9831,
+        "best_val_loss": 8.1e-05,
+        "params": 481153,
+        "training_time_hours": 39.31
+      },
+      "linear_regression_baseline": {
+        "mse": 0.000163,
+        "mae": 0.0042,
+        "rmse": 0.012768,
+        "r2": 0.9658,
+        "fom": 0.3021
+      },
+      "improvement_vs_linear_pct": 50.55,
+      "model_path": "models/multihorizon_5yr.pth"
+    },
+    "10yr": {
+      "horizon": "10yr",
+      "years_ahead": 10,
+      "input_epochs": [
+        1975,
+        1980,
+        1985,
+        1990,
+        1995,
+        2000,
+        2005
+      ],
+      "last_input_year": 2005,
+      "target_year": 2015,
+      "n_input_epochs": 7,
+      "convlstm": {
+        "val_mse": 0.000126,
+        "val_mae": 0.004611,
+        "val_rmse": 0.011233,
+        "val_fom": 0.5959,
+        "r2": 0.9735,
+        "best_val_loss": 0.000127,
+        "params": 481153,
+        "training_time_hours": 28.5
+      },
+      "linear_regression_baseline": {
+        "mse": 0.000264,
+        "mae": 0.004836,
+        "rmse": 0.016256,
+        "r2": 0.9446,
+        "fom": 0.4618
+      },
+      "improvement_vs_linear_pct": 52.2,
+      "model_path": "models/multihorizon_10yr.pth"
+    },
+    "20yr": {
+      "horizon": "20yr",
+      "years_ahead": 20,
+      "input_epochs": [
+        1975,
+        1980,
+        1985,
+        1990,
+        1995
+      ],
+      "last_input_year": 1995,
+      "target_year": 2015,
+      "n_input_epochs": 5,
+      "convlstm": {
+        "val_mse": 0.000281,
+        "val_mae": 0.006945,
+        "val_rmse": 0.016775,
+        "val_fom": 0.5968,
+        "r2": 0.941,
+        "best_val_loss": 0.000284,
+        "params": 481153,
+        "training_time_hours": 16.06
+      },
+      "linear_regression_baseline": {
+        "mse": 0.000591,
+        "mae": 0.007726,
+        "rmse": 0.024304,
+        "r2": 0.8761,
+        "fom": 0.5269
+      },
+      "improvement_vs_linear_pct": 52.39,
+      "model_path": "models/multihorizon_20yr.pth"
+    }
+  },
+  "timestamp": "2026-04-08T05:59:45.984138"
+}

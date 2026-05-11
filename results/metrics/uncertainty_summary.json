@@ -1,0 +1,114 @@
+{
+  "date": "2026-03-31T11:28:48.677538",
+  "model": "ConvLSTM_3ch_MCDropout",
+  "mc_passes": 20,
+  "mc_dropout_p": 0.1,
+  "tiles_processed": 1352,
+  "tiles_skipped": 17161,
+  "inference_time_min": 169.5,
+  "uncertainty_stats": {
+    "mean_std": 0.002789,
+    "median_std": 0.001662,
+    "max_std": 0.079818,
+    "mean_cv": 0.2542,
+    "mean_ci95_width": 0.009522
+  },
+  "prediction_stats": {
+    "mean_prediction": 0.035006,
+    "mean_ground_truth": 0.033935,
+    "mean_abs_error": 0.004335
+  },
+  "calibration": {
+    "n_bins": 10,
+    "pearson_r_std_vs_error": 0.9834,
+    "interpretation": "r close to 1.0 = well-calibrated; uncertain pixels have higher actual error",
+    "bins": [
+      {
+        "bin": 1,
+        "std_lower": 0.000172,
+        "std_upper": 0.002283,
+        "mean_predicted_std": 0.001963,
+        "mean_actual_error": 0.003501,
+        "n_pixels": 868906
+      },
+      {
+        "bin": 2,
+        "std_lower": 0.002283,
+        "std_upper": 0.00268,
+        "mean_predicted_std": 0.002488,
+        "mean_actual_error": 0.003512,
+        "n_pixels": 868905
+      },
+      {
+        "bin": 3,
+        "std_lower": 0.00268,
+        "std_upper": 0.00306,
+        "mean_predicted_std": 0.002868,
+        "mean_actual_error": 0.003881,
+        "n_pixels": 868907
+      },
+      {
+        "bin": 4,
+        "std_lower": 0.00306,
+        "std_upper": 0.003503,
+        "mean_predicted_std": 0.003272,
+        "mean_actual_error": 0.004513,
+        "n_pixels": 868906
+      },
+      {
+        "bin": 5,
+        "std_lower": 0.003503,
+        "std_upper": 0.004105,
+        "mean_predicted_std": 0.003785,
+        "mean_actual_error": 0.005616,
+        "n_pixels": 868905
+      },
+      {
+        "bin": 6,
+        "std_lower": 0.004105,
+        "std_upper": 0.005002,
+        "mean_predicted_std": 0.004522,
+        "mean_actual_error": 0.007459,
+        "n_pixels": 868907
+      },
+      {
+        "bin": 7,
+        "std_lower": 0.005002,
+        "std_upper": 0.006354,
+        "mean_predicted_std": 0.005636,
+        "mean_actual_error": 0.010233,
+        "n_pixels": 868906
+      },
+      {
+        "bin": 8,
+        "std_lower": 0.006354,
+        "std_upper": 0.008296,
+        "mean_predicted_std": 0.007267,
+        "mean_actual_error": 0.013665,
+        "n_pixels": 868905
+      },
+      {
+        "bin": 9,
+        "std_lower": 0.008296,
+        "std_upper": 0.011358,
+        "mean_predicted_std": 0.009679,
+        "mean_actual_error": 0.01763,
+        "n_pixels": 868907
+      },
+      {
+        "bin": 10,
+        "std_lower": 0.011358,
+        "std_upper": 0.079818,
+        "mean_predicted_std": 0.015102,
+        "mean_actual_error": 0.022736,
+        "n_pixels": 868907
+      }
+    ]
+  },
+  "output_files": [
+    "geotiff_exports/CONUS_mc_mean_prediction.tif",
+    "geotiff_exports/CONUS_mc_uncertainty_std.tif",
+    "geotiff_exports/CONUS_mc_uncertainty_cv.tif",
+    "geotiff_exports/CONUS_mc_uncertainty_ci95_width.tif"
+  ]
+}

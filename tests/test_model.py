@@ -1,8 +1,9 @@
 """
-Unit tests for ConvLSTM model.
+Unit tests for ConvLSTM model and baseline architectures.
 """
 
 import torch
+import numpy as np
 import pytest
 from src.models.convlstm import ConvLSTM, ConvLSTMCell, create_model
 
@@ -44,6 +45,17 @@ def test_convlstm_forward():
         assert c.shape == (batch_size, hidden_channels, height, width)
 
 
+def test_convlstm_output_range():
+    """Verify sigmoid decoder constrains outputs to [0, 1]."""
+    model = create_model(input_channels=2, hidden_channels=64, num_layers=2)
+    model.eval()
+    x = torch.randn(1, 2, 2, 32, 32)
+    with torch.no_grad():
+        preds, _ = model(x)
+    assert preds.min() >= 0.0
+    assert preds.max() <= 1.0
+
+
 def test_create_model():
     """Test model factory function."""
     model = create_model(input_channels=2, hidden_channels=64, num_layers=2)
@@ -52,12 +64,24 @@ def test_create_model():
 
 
 def test_parameter_count():
-    """Test parameter counting."""
-    model = create_model(input_channels=2, hidden_channels=64, num_layers=2)
+    """Test parameter counting for 3-channel model with skip-connection decoder."""
+    model = create_model(input_channels=3, hidden_channels=64, num_layers=2)
     param_count = model.count_parameters()
-    
-    # Should be around 470K parameters
-    assert 450000 < param_count < 500000
+    # skip_proj adds 64*2 * 64 + 64 = 8256 params over old 472,897
+    assert param_count == 481153, f"Expected 481,153 but got {param_count:,}"
+
+
+def test_skip_connection_decode():
+    """Test skip-connection decoder fuses all layer hidden states."""
+    model = create_model(input_channels=3, hidden_channels=64, num_layers=2)
+    model.eval()
+    h0 = torch.randn(1, 64, 32, 32)
+    h1 = torch.randn(1, 64, 32, 32)
+    with torch.no_grad():
+        out = model.decode([h0, h1])
+    assert out.shape == (1, 1, 32, 32)
+    assert out.min() >= 0.0
+    assert out.max() <= 1.0
 
 
 def test_autoregressive_prediction():
@@ -73,6 +97,8 @@ def test_autoregressive_prediction():
     
     assert predictions.shape == (batch_size, seq_len, 1, 128, 128)
     assert not torch.isnan(predictions).any()
+
+
 
 
 if __name__ == "__main__":

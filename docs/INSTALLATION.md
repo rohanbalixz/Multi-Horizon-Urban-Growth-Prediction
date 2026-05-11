@@ -2,20 +2,20 @@
 
 ## Prerequisites
 
-- **Python**: 3.8 or higher
+- **Python**: 3.12 or higher
 - **pip**: Latest version recommended
 - **Git**: For cloning the repository
 - **Storage**: ~10 GB for GHSL datasets
 - **RAM**: 8 GB minimum, 16 GB recommended
-- **GPU**: Optional (CPU training takes ~6 hours)
+- **GPU**: Optional (CPU training takes varies by hardware)
 
 ## Quick Installation
 
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/rohanbalixz/NeuralTimeCapsule.git
-cd NeuralTimeCapsule
+git clone https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction.git
+cd Multi-Horizon-Urban-Growth-Prediction
 ```
 
 ### 2. Create Virtual Environment
@@ -104,16 +104,16 @@ python -c "from src.models.convlstm import create_model; model = create_model();
 
 ## Pretrained Weights
 
-Download pretrained model checkpoint:
+Train the 3-channel ConvLSTM model:
 
 ```bash
-# Weights are included in repository
-ls models/best_urban_growth_model.pth
+python scripts/train_3channel.py
 ```
 
-Or download separately:
+This produces `models/best_3ch_mc_model.pth`. To also train baselines:
 ```bash
-wget https://github.com/rohanbalixz/NeuralTimeCapsule/releases/download/v1.0/best_urban_growth_model.pth -O models/best_urban_growth_model.pth
+python scripts/run_ablations_3ch.py
+python scripts/train_sota_baselines.py
 ```
 
 ## Jupyter Notebook Setup
@@ -200,7 +200,7 @@ pytest tests/
 
 | Component | Minimum | Recommended |
 |-----------|---------|-------------|
-| Python | 3.8 | 3.10+ |
+| Python | 3.12 | 3.12+ |
 | RAM | 8 GB | 16 GB |
 | Storage | 10 GB | 50 GB |
 | CPU | 4 cores | 8+ cores |
@@ -220,5 +220,5 @@ See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for complete reproduction guide.
 ## Support
 
 - 📧 **Email**: rohan.bali@example.com
-- 💬 **GitHub Issues**: [Report problems](https://github.com/rohanbalixz/NeuralTimeCapsule/issues)
-- 📖 **Documentation**: [Project Wiki](https://github.com/rohanbalixz/NeuralTimeCapsule/wiki)
+- 💬 **GitHub Issues**: [Report problems](https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/issues)
+- 📖 **Documentation**: [Project Wiki](https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/wiki)

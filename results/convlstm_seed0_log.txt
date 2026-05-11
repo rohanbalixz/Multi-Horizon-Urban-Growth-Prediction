@@ -1,0 +1,39 @@
+============================================================
+ConvLSTM SEED-0 TRAINING (multi-seed replication)
+Started: 2026-04-16 18:36:36.896487
+============================================================
+
+[DATA] Loading rasters...
+  Raster shape: (12718, 23997)
+
+[SPLIT] Using same val_tile_indices.json as all other experiments...
+  Dataset tiles: 5,698
+  Train: 4,877  Val: 821
+
+[MODEL] ConvLSTM (identical architecture to train_3channel.py)...
+  Parameters: 481,153
+  Seed: 0
+
+[TRAIN] 25 epochs, lr=0.0005, batch=8...
+  Epoch   1/25 | train=0.010036 | val=0.002365 | lr=0.000500 | 91m elapsed, ETA 2175m
+  Epoch   5/25 | train=0.000242 | val=0.000174 | lr=0.000500 | 419m elapsed, ETA 1675m
+  Epoch  10/25 | train=0.000168 | val=0.000104 | lr=0.000500 | 702m elapsed, ETA 1054m
+  Epoch  15/25 | train=0.000163 | val=0.000108 | lr=0.000500 | 1111m elapsed, ETA 741m
+  Epoch  20/25 | train=0.000135 | val=0.000089 | lr=0.000500 | 1540m elapsed, ETA 385m
+  Epoch  25/25 | train=0.000116 | val=0.000181 | lr=0.000500 | 1963m elapsed, ETA 0m
+
+  Model saved: /Users/rohanbali/Desktop/NeuralTimeCapsule/models/best_3ch_mc_model_seed0.pth
+
+[EVAL] Computing FoM on val tiles...
+  MSE = 0.000076  MAE = 0.003791  FoM = 0.5085
+  Total time: 32.8 hrs
+
+  Results saved: /Users/rohanbali/Desktop/NeuralTimeCapsule/results/metrics/convlstm_multiseed_results.json
+
+============================================================
+ConvLSTM SEED-0 COMPLETE
+  FoM (seed 0):  0.5085
+  FoM (seed 42): 0.5040
+  Gap: 0.0045  (vs CNN-ConvLSTM gap: 0.172–0.235)
+============================================================
+

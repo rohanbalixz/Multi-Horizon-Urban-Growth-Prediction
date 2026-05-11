@@ -1,0 +1,39 @@
+{
+  "experiment": "cnn_multiseed",
+  "description": "SimpleCNN trained with 2 completed seeds (0 and 42)",
+  "seeds_run_fresh": [
+    0
+  ],
+  "seed_42_from_existing": true,
+  "per_seed": {
+    "0": {
+      "fom_2015": 0.7285,
+      "mse_2015": 2.2e-05,
+      "fom_2020": 0.2597,
+      "mse_2020": 0.000163
+    },
+    "42": {
+      "fom_2015": 0.739,
+      "mse_2015": 2.5e-05,
+      "fom_2020": 0.2432,
+      "mse_2020": 0.00049,
+      "note": "2015 FoM from ablation_3ch_results; 2020 from cnn_2020_holdout"
+    }
+  },
+  "summary": {
+    "n_seeds_completed": 2,
+    "seeds": [
+      0,
+      42
+    ],
+    "note": "seed 1 run exceeded time limit; omitted from summary",
+    "fom_2015_mean": 0.7338,
+    "fom_2015_std": 0.0074,
+    "fom_2015_min": 0.7285,
+    "fom_2015_max": 0.739,
+    "fom_2020_mean": 0.2515,
+    "fom_2020_std": 0.0117,
+    "fom_2020_min": 0.2432,
+    "fom_2020_max": 0.2597
+  }
+}

@@ -19,16 +19,16 @@ geotiff_exports/
 
 # ============================================
 # Ignore MODEL WEIGHTS & PREDICTIONS
-# Exception: Keep best_urban_growth_model.pth (tracked)
+# Trained weights are not distributed with the repo.
 # ============================================
 *.pth
-!best_urban_growth_model.pth
 *.pt
 *.pkl
 *.pickle
 *.ckpt
 *.npz
 *.npy
+models/
 
 # ============================================
 # Ignore ENVIRONMENTS
@@ -90,4 +90,28 @@ __pycache__/
 *.tmp
 *.bak
 *.backup
-cleanup_repo.sh
+nohup.out
+logs/
+*.brf
+
+# ============================================
+# Paper sources (not distributed with the repo)
+# ============================================
+paper/
+*.pdf
+*.docx
+*.tex
+*.bib
+!CITATION.bib
+
+# ============================================
+# Sister-project directories (not part of this repo)
+# ============================================
+Masters Project/
+SpatialDI/
+
+# ============================================
+# Notebooks scratch dir (kept out of release)
+# ============================================
+notebooks/
+*.ipynb

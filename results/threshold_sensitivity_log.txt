@@ -1,0 +1,72 @@
+=================================================================
+FoM THRESHOLD SENSITIVITY ANALYSIS
+Started: 2026-04-16 00:02:04.636040
+=================================================================
+
+[HOLDOUT] 821 val tiles loaded
+
+[DATA] Loading rasters...
+  Raster shape: (12718, 23997)
+
+[CONVLSTM] Loading saved GeoTIFF predictions...
+  2015 and 2020 ConvLSTM predictions loaded.
+
+[CNN] Loading best_cnn_3ch.pth (seed 42)...
+  Parameters: 74,273
+  CNN inference — 2015 holdout...
+    500/821 tiles, 5s
+  CNN inference — 2020 holdout...
+    500/821 tiles, 5s
+
+[U-NET] Loading best_unet_3ch.pth...
+  Parameters: 473,857
+  U-Net inference — 2015 holdout...
+    500/821 tiles, 7s
+
+[SWEEP] Computing FoM at each threshold...
+
+  -- threshold = 0.005 --
+    2015  n_eval=1,967,265  growth=601,952 (30.6%)
+    2015  CNN=0.6454  UNet=0.6239  ConvLSTM=0.5013  Linear=0.4313
+    2020  n_eval=2,022,970  growth=336,840 (16.7%)
+    2020  CNN=0.2917  ConvLSTM=0.2347  Linear=0.0641
+
+  -- threshold = 0.01 --
+    2015  n_eval=1,542,747  growth=386,623 (25.1%)
+    2015  CNN=0.6834  UNet=0.6714  ConvLSTM=0.5078  Linear=0.3751
+    2020  n_eval=1,574,225  growth=166,446 (10.6%)
+    2020  CNN=0.2432  ConvLSTM=0.1556  Linear=0.0530
+
+  -- threshold = 0.02 --
+    2015  n_eval=1,092,893  growth=219,631 (20.1%)
+    2015  CNN=0.6796  UNet=0.6724  ConvLSTM=0.4159  Linear=0.3016
+    2020  n_eval=1,104,557  growth=60,723 (5.5%)
+    2020  CNN=0.1702  ConvLSTM=0.0838  Linear=0.0377
+
+  -- threshold = 0.05 --
+    2015  n_eval=636,482  growth=46,806 (7.4%)
+    2015  CNN=0.5057  UNet=0.4621  ConvLSTM=0.2418  Linear=0.2779
+    2020  n_eval=642,265  growth=10,602 (1.7%)
+    2020  CNN=0.0832  ConvLSTM=0.0367  Linear=0.0193
+
+=================================================================
+THRESHOLD SENSITIVITY SUMMARY
+=================================================================
+
+  Thresh   2015 CNN  2015 Conv     gap   2020 CNN  2020 Conv     gap
+-----------------------------------------------------------------
+   0.005     0.6454     0.5013  +0.144     0.2917     0.2347  +0.057
+   0.010     0.6834     0.5078  +0.175     0.2432     0.1556  +0.088
+   0.020     0.6796     0.4159  +0.264     0.1702     0.0838  +0.086
+   0.050     0.5057     0.2418  +0.264     0.0832     0.0367  +0.046
+
+  CNN > ConvLSTM at ALL thresholds — 2015: True  2020: True
+
+  Saved: /Users/rohanbali/Desktop/NeuralTimeCapsule/results/metrics/threshold_sensitivity.json
+  Saved: /Users/rohanbali/Desktop/NeuralTimeCapsule/results/figures/fig_threshold_sensitivity.pdf
+  Saved: /Users/rohanbali/Desktop/NeuralTimeCapsule/results/figures/fig_threshold_sensitivity.png
+
+=================================================================
+THRESHOLD SENSITIVITY COMPLETE
+=================================================================
+

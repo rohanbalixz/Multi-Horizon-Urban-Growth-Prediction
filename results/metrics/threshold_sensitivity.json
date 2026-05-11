@@ -1,0 +1,116 @@
+{
+  "experiment": "threshold_sensitivity",
+  "description": "FoM recomputed at thresholds [0.005, 0.01, 0.02, 0.05]. eval_mask = (counts > 0) & (gt > t); obs_change = (gt - prev) > t; pred_change = (pred - prev) > t. Paper uses t=0.01. Sensitivity tests whether CNN>ConvLSTM ranking holds.",
+  "models": {
+    "cnn": "best_cnn_3ch.pth (seed 42, SimpleCNN 74K params)",
+    "unet": "best_unet_3ch.pth (SimpleUNet 474K params, 32-64-128 ch)",
+    "convlstm": "best_3ch_mc_model.pth (ConvLSTM 481K params, predictions from GeoTIFF)",
+    "linear": "2*prev - prev_prev linear extrapolation",
+    "persistence": "previous epoch unchanged"
+  },
+  "cnn_wins_all_thresholds_2015": true,
+  "cnn_wins_all_thresholds_2020": true,
+  "results": {
+    "0.005": {
+      "threshold": 0.005,
+      "holdout_2015": {
+        "n_eval_pixels": 1967265,
+        "n_growth_pixels": 601952,
+        "pct_growth": 30.6,
+        "cnn": 0.6454,
+        "unet": 0.6239,
+        "convlstm": 0.5013,
+        "linear": 0.4313,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.1441,
+        "unet_gap_over_convlstm": 0.1226
+      },
+      "holdout_2020": {
+        "n_eval_pixels": 2022970,
+        "n_growth_pixels": 336840,
+        "pct_growth": 16.65,
+        "cnn": 0.2917,
+        "convlstm": 0.2347,
+        "linear": 0.0641,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.057
+      }
+    },
+    "0.01": {
+      "threshold": 0.01,
+      "holdout_2015": {
+        "n_eval_pixels": 1542747,
+        "n_growth_pixels": 386623,
+        "pct_growth": 25.06,
+        "cnn": 0.6834,
+        "unet": 0.6714,
+        "convlstm": 0.5078,
+        "linear": 0.3751,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.1755,
+        "unet_gap_over_convlstm": 0.1636
+      },
+      "holdout_2020": {
+        "n_eval_pixels": 1574225,
+        "n_growth_pixels": 166446,
+        "pct_growth": 10.57,
+        "cnn": 0.2432,
+        "convlstm": 0.1556,
+        "linear": 0.053,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.0876
+      }
+    },
+    "0.02": {
+      "threshold": 0.02,
+      "holdout_2015": {
+        "n_eval_pixels": 1092893,
+        "n_growth_pixels": 219631,
+        "pct_growth": 20.1,
+        "cnn": 0.6796,
+        "unet": 0.6724,
+        "convlstm": 0.4159,
+        "linear": 0.3016,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.2637,
+        "unet_gap_over_convlstm": 0.2565
+      },
+      "holdout_2020": {
+        "n_eval_pixels": 1104557,
+        "n_growth_pixels": 60723,
+        "pct_growth": 5.5,
+        "cnn": 0.1702,
+        "convlstm": 0.0838,
+        "linear": 0.0377,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.0864
+      }
+    },
+    "0.05": {
+      "threshold": 0.05,
+      "holdout_2015": {
+        "n_eval_pixels": 636482,
+        "n_growth_pixels": 46806,
+        "pct_growth": 7.35,
+        "cnn": 0.5057,
+        "unet": 0.4621,
+        "convlstm": 0.2418,
+        "linear": 0.2779,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.2639,
+        "unet_gap_over_convlstm": 0.2203
+      },
+      "holdout_2020": {
+        "n_eval_pixels": 642265,
+        "n_growth_pixels": 10602,
+        "pct_growth": 1.65,
+        "cnn": 0.0832,
+        "convlstm": 0.0367,
+        "linear": 0.0193,
+        "persistence": 0.0,
+        "cnn_gap_over_convlstm": 0.0465
+      }
+    }
+  },
+  "timestamp": "2026-04-16 00:04:14.696546"
+}

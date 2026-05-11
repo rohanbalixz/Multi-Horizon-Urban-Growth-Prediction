@@ -1,0 +1,23 @@
+{
+  "experiment": "convlstm_softjaccard",
+  "description": "ConvLSTM trained with Soft-Jaccard loss (FoM-aligned). Architecture identical to best_3ch_mc_model.pth. Only change: MSE \u2192 Soft-Jaccard on growth residuals.",
+  "loss_function": "1 - Jaccard(relu(pred-prev), relu(target-prev))",
+  "architecture": "ConvLSTM_3ch_MCDropout_SkipDecoder",
+  "params": 481153,
+  "seed": 42,
+  "num_epochs": 15,
+  "best_val_softjaccard": 0.9624219907140269,
+  "spatial_holdout_2015": {
+    "fom": 0.1209,
+    "mse": 0.02986946,
+    "A": 1132854,
+    "B": 156176,
+    "C": 2366,
+    "n_eval_pixels": 4564797,
+    "eval_mask": "gt_2015 > 0.01",
+    "change_threshold": 0.01
+  },
+  "model_path": "/Users/rohanbali/Desktop/NeuralTimeCapsule/models/best_convlstm_softjaccard.pth",
+  "training_time_min": 1164.4,
+  "timestamp": "2026-04-25 07:05:10.493407"
+}
