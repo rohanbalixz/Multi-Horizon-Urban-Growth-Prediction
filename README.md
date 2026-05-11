@@ -13,9 +13,18 @@
   <a href="#citation"><img alt="Cite this work" src="https://img.shields.io/badge/Cite-this%20work-orange.svg"></a>
 </p>
 
-<p align="center"><b>Author:</b> Rohan Bali &nbsp;·&nbsp; <b>Contact:</b> bali2rohan@gmail.com</p>
+<p align="center">
+  <b>Author:</b> Rohan Bali
+  &nbsp;·&nbsp;
+  <b>Contact:</b>
+  <a href="mailto:rohanbaliwork@gmail.com">rohanbaliwork@gmail.com</a>
+  &nbsp;|&nbsp;
+  <a href="mailto:rbali@umassd.edu">rbali@umassd.edu</a>
+</p>
 
 ---
+
+<a id="tldr"></a>
 
 ## TL;DR
 
@@ -25,6 +34,8 @@ A six-model benchmark (CNN, U-Net, ConvLSTM with Monte Carlo Dropout, linear ext
   <img src="results/figures/fig_title_maps.png" alt="Representative validation tile">
   <br><em>Representative validation tile from the 821-tile 2015 spatial holdout: GHSL ground truth, ConvLSTM prediction, and MC Dropout uncertainty (20 stochastic forward passes).</em>
 </p>
+
+<a id="table-of-contents"></a>
 
 ## Table of Contents
 
@@ -42,6 +53,8 @@ A six-model benchmark (CNN, U-Net, ConvLSTM with Monte Carlo Dropout, linear ext
 12. [Citation](#citation)
 13. [Acknowledgments](#acknowledgments)
 14. [License](#license)
+
+<a id="headline-results"></a>
 
 ## Headline results
 
@@ -108,6 +121,8 @@ The apparent ConvLSTM catch-up at longer horizons is mostly a channel-count conf
 
 Every higher-uncertainty decile bin has strictly larger mean actual error than the bin below it. The ConvLSTM model is the only one in the benchmark producing calibrated spatial uncertainty.
 
+<a id="repository-contents"></a>
+
 ## Repository contents
 
 | Path              | Purpose                                                                  |
@@ -121,6 +136,8 @@ Every higher-uncertainty decile bin has strictly larger mean actual error than t
 | `docs/`           | Installation guide and model card                                        |
 
 Local-only directories that are not pushed: `data/`, `geotiff_exports/`, `models/`, `paper/`, `logs/`, `notebooks/`.
+
+<a id="quick-start"></a>
 
 ## Quick start
 
@@ -137,6 +154,8 @@ print(y.shape)                             # torch.Size([1, 1, 128, 128])
 ```
 
 A full training run takes roughly 24 hours on a single A100 (see [Hardware and runtime](#hardware-and-runtime)).
+
+<a id="experiments"></a>
 
 ## Experiments
 
@@ -224,6 +243,8 @@ All experiments predict the 2015 epoch. Forecast horizon is varied by truncating
 | `scripts/make_architecture_unet.py`     | U-Net architecture diagram                               |
 | `scripts/make_paper_fom_figure.py`      | Headline FoM comparison panel                            |
 
+<a id="architecture"></a>
+
 ## Architecture
 
 <p align="center">
@@ -232,6 +253,8 @@ All experiments predict the 2015 epoch. Forecast horizon is varied by truncating
 </p>
 
 The primary model has 481,153 parameters. Input tensor shape is T = 8 time steps × 3 channels × 128 × 128 pixels. The two ablation architectures (flat-stacking CNN at 74 K parameters and U-Net at 474 K parameters) share the same decoder. The only architectural variable across the three deep models is how the eight input epochs are encoded: channel concatenation versus a recurrent hidden state.
+
+<a id="data"></a>
 
 ## Data
 
@@ -263,6 +286,8 @@ python scripts/preprocess_all_data.py        # 1975 to 2015
 python scripts/preprocess_2020.py            # 2020 blind temporal holdout
 ```
 
+<a id="installation"></a>
+
 ## Installation
 
 ```bash
@@ -274,6 +299,8 @@ pip install -r requirements.txt
 ```
 
 Full system requirements and platform-specific notes are in [docs/INSTALLATION.md](docs/INSTALLATION.md).
+
+<a id="reproducing-all-experiments"></a>
 
 ## Reproducing all experiments
 
@@ -320,6 +347,8 @@ python scripts/make_architecture_figure.py
 
 Final aggregated numbers are written to `results/metrics/all_results.json` by `scripts/consolidate_results.py`.
 
+<a id="evaluation-protocol"></a>
+
 ## Evaluation protocol
 
 * **Validation tiles.** 821 geographic blocks selected by `block_id mod 5 == 0`, stored in `results/metrics/val_tile_indices.json`. The same tile list is used by every model and every script.
@@ -327,6 +356,8 @@ Final aggregated numbers are written to `results/metrics/all_results.json` by `s
 * **Figure of Merit.** Pontius et al., 2008: FoM = B / (A + B + C), where B is correctly predicted growth, A is missed growth, C is false growth. True negatives are excluded.
 * **Multi-seed.** Every neural model is trained with two seeds (0 and 42); reported numbers are mean ± std across seeds.
 * **Statistical confirmation.** Paired Wilcoxon signed-rank test on per-tile FoM values plus bootstrap 95% confidence intervals (`scripts/compute_pertile_fom.py`).
+
+<a id="hardware-and-runtime"></a>
 
 ## Hardware and runtime
 
@@ -341,9 +372,13 @@ Final aggregated numbers are written to `results/metrics/all_results.json` by `s
 
 Total reproducible compute for the full benchmark across two seeds is roughly five GPU-days on a single A100 plus a half day of CPU work.
 
+<a id="pre-trained-weights"></a>
+
 ## Pre-trained weights
 
 Trained model checkpoints are not distributed with this repository. To regenerate them, run the training scripts listed above on a machine with a CUDA-capable GPU. Each ConvLSTM training run produces a `models/best_3ch_mc_model.pth` checkpoint along with a JSON training history at `results/metrics/training_3ch_history.json`.
+
+<a id="citation"></a>
 
 ## Citation
 
@@ -360,13 +395,22 @@ If you use this code in academic work, please cite:
 
 A peer-reviewed manuscript describing this benchmark is currently in submission; this citation block will be updated once it is published.
 
+<a id="acknowledgments"></a>
+
 ## Acknowledgments
 
 The Global Human Settlement Layer (GHSL) products used throughout this work are produced and distributed by the European Commission Joint Research Centre under the Copernicus programme. The SLEUTH cellular automaton baseline implementation follows Clarke et al., 1997. The Figure of Merit metric follows Pontius et al., 2008.
 
+<a id="contact"></a>
+
 ## Contact
 
-Questions, issues, or collaboration enquiries: open a GitHub issue at https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/issues or email **bali2rohan@gmail.com**.
+Questions, issues, or collaboration enquiries:
+
+- Open a GitHub issue at [https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/issues](https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/issues)
+- Email **[rohanbaliwork@gmail.com](mailto:rohanbaliwork@gmail.com)** or **[rbali@umassd.edu](mailto:rbali@umassd.edu)**
+
+<a id="license"></a>
 
 ## License
 

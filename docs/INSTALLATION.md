@@ -217,5 +217,5 @@ After installation:
 
 ## Support
 
-- Email: bali2rohan@gmail.com
+- Email: rohanbaliwork@gmail.com or rbali@umassd.edu
 - GitHub Issues: [Report problems](https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/issues)

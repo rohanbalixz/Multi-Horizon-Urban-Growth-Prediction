@@ -220,7 +220,7 @@ Before submitting:
 - **GitHub Issues**: Bug reports and feature requests
 - **Pull Requests**: Code contributions
 - **Discussions**: General questions and ideas
-- **Email**: rohan.bali@example.com for private inquiries
+- **Email**: rohanbaliwork@gmail.com or rbali@umassd.edu for private inquiries
 
 ## License
 
