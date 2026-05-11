@@ -58,9 +58,9 @@ See [requirements.txt](../requirements.txt) for complete list.
 ### GHSL Built-Up Surface Data
 
 1. Download GHSL R2023A from [JRC Data Catalogue](https://ghsl.jrc.ec.europa.eu/download.php):
-   - `GHS_BUILT_S_E1975_GLOBE_R2023A_4326_3ss_V1_0.tif`
-   - `GHS_BUILT_S_E1990_GLOBE_R2023A_4326_3ss_V1_0.tif`
-   - `GHS_BUILT_S_E2000_GLOBE_R2023A_4326_3ss_V1_0.tif`
+ - `GHS_BUILT_S_E1975_GLOBE_R2023A_4326_3ss_V1_0.tif`
+ - `GHS_BUILT_S_E1990_GLOBE_R2023A_4326_3ss_V1_0.tif`
+ - `GHS_BUILT_S_E2000_GLOBE_R2023A_4326_3ss_V1_0.tif`
 
 2. Place files in `data/ghsl/` directory:
 ```bash
@@ -99,7 +99,7 @@ python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
 ### Run Model Test
 
 ```bash
-python -c "from src.models.convlstm import create_model; model = create_model(); print('✓ Model created successfully')"
+python -c "from src.models.convlstm import create_model; model = create_model(); print(' Model created successfully')"
 ```
 
 ## Pretrained Weights
@@ -173,7 +173,7 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 
 Reduce batch size in training config:
 ```python
-batch_size = 4  # Reduce from default 8
+batch_size = 4 # Reduce from default 8
 ```
 
 Or use CPU-only mode:
@@ -209,16 +209,13 @@ pytest tests/
 ## Next Steps
 
 After installation:
-1. ✅ Verify all dependencies installed
-2. ✅ Download GHSL and OSM datasets
-3. ✅ Run preprocessing pipeline
-4. ✅ Start training or load pretrained weights
-5. ✅ Explore notebooks for examples
-
-See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for complete reproduction guide.
+1. Verify all dependencies installed
+2. Download GHSL and OSM datasets
+3. Run the preprocessing pipeline
+4. Start training or load pretrained weights
+5. Explore the examples described in the main README
 
 ## Support
 
-- 📧 **Email**: rohan.bali@example.com
-- 💬 **GitHub Issues**: [Report problems](https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/issues)
-- 📖 **Documentation**: [Project Wiki](https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/wiki)
+- Email: bali2rohan@gmail.com
+- GitHub Issues: [Report problems](https://github.com/rohanbalixz/Multi-Horizon-Urban-Growth-Prediction/issues)

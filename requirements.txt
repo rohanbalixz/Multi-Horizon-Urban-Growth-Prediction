@@ -1,5 +1,5 @@
-# NeuralTimeCapsule — Urban Growth Prediction
-# Python 3.8+ required
+# Multi-Horizon Urban Growth Prediction
+# Python 3.10 or newer
 
 # Deep Learning
 torch>=1.10.0

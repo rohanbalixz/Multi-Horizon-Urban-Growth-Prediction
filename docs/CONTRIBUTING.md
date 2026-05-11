@@ -6,16 +6,16 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 1. **Fork the repository**
 2. **Clone your fork**:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/Multi-Horizon-Urban-Growth-Prediction.git
-   cd Multi-Horizon-Urban-Growth-Prediction
-   ```
+ ```bash
+ git clone https://github.com/YOUR_USERNAME/Multi-Horizon-Urban-Growth-Prediction.git
+ cd Multi-Horizon-Urban-Growth-Prediction
+ ```
 3. **Create a virtual environment**:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
-   ```
+ ```bash
+ python -m venv .venv
+ source .venv/bin/activate
+ pip install -r requirements.txt
+ ```
 
 ## Development Workflow
 
@@ -58,9 +58,9 @@ pytest --cov=src tests/
 ### 4. Submit Pull Request
 
 1. Push your branch:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+ ```bash
+ git push origin feature/your-feature-name
+ ```
 2. Open a pull request on GitHub
 3. Describe your changes clearly
 4. Link related issues
@@ -77,19 +77,19 @@ Follow PEP 8 with these specifics:
 Example:
 ```python
 def process_tile(tile_data: np.ndarray, normalize: bool = True) -> np.ndarray:
-    """
-    Process a single tile.
-    
-    Args:
-        tile_data: Input tile array
-        normalize: Whether to normalize values
-        
-    Returns:
-        Processed tile array
-    """
-    if normalize:
-        tile_data = (tile_data - tile_data.mean()) / tile_data.std()
-    return tile_data
+ """
+ Process a single tile.
+
+ Args:
+ tile_data: Input tile array
+ normalize: Whether to normalize values
+
+ Returns:
+ Processed tile array
+ """
+ if normalize:
+ tile_data = (tile_data - tile_data.mean()) / tile_data.std()
+ return tile_data
 ```
 
 ### Docstring Format
@@ -97,21 +97,21 @@ def process_tile(tile_data: np.ndarray, normalize: bool = True) -> np.ndarray:
 Use Google-style docstrings:
 ```python
 def function_name(arg1, arg2):
-    """
-    Short description.
-    
-    Longer description if needed.
-    
-    Args:
-        arg1 (type): Description
-        arg2 (type): Description
-        
-    Returns:
-        type: Description
-        
-    Raises:
-        ValueError: When condition occurs
-    """
+ """
+ Short description.
+
+ Longer description if needed.
+
+ Args:
+ arg1 (type): Description
+ arg2 (type): Description
+
+ Returns:
+ type: Description
+
+ Raises:
+ ValueError: When condition occurs
+ """
 ```
 
 ## Testing Guidelines
@@ -126,13 +126,13 @@ def function_name(arg1, arg2):
 Example:
 ```python
 def test_convlstm_handles_variable_sequence_length():
-    """Test that ConvLSTM processes sequences of different lengths."""
-    model = create_model()
-    
-    for seq_len in [2, 3, 5]:
-        x = torch.randn(1, seq_len, 2, 128, 128)
-        predictions, _ = model(x)
-        assert predictions.shape[1] == seq_len
+ """Test that ConvLSTM processes sequences of different lengths."""
+ model = create_model()
+
+ for seq_len in [2, 3, 5]:
+ x = torch.randn(1, seq_len, 2, 128, 128)
+ predictions, _ = model(x)
+ assert predictions.shape[1] == seq_len
 ```
 
 ### Test Coverage
@@ -182,7 +182,7 @@ Example:
 ```python
 model = create_model()
 x = torch.zeros(1, 3, 2, 128, 128)
-predictions, _ = model(x)  # Raises RuntimeError
+predictions, _ = model(x) # Raises RuntimeError
 ```
 
 **Expected**: Should handle zero-valued inputs gracefully
