@@ -28,7 +28,7 @@
 
 ## TL;DR
 
-A six-model benchmark (CNN, U-Net, ConvLSTM with Monte Carlo Dropout, linear extrapolation, SLEUTH cellular automata, persistence) for predicting urban built-up surface density across the Continental United States (CONUS) at 250 m resolution from 45 years of Global Human Settlement Layer (GHSL) observations. The repository contains the full experimental pipeline behind two independent holdouts (821-tile 2015 spatial block, fully sealed 2020 temporal), four change-threshold sensitivities, channel-matched multi-horizon experiments, and MC Dropout calibration on 8.68 million validation pixels. Trained weights, raw rasters, and the manuscript are intentionally not committed; see [Data](#data) for download instructions.
+A six-model benchmark (CNN, U-Net, ConvLSTM with Monte Carlo Dropout, linear extrapolation, SLEUTH cellular automata, persistence) for predicting urban built-up surface density across the Continental United States (CONUS) at 250 m resolution from 45 years of Global Human Settlement Layer (GHSL) observations. The repository contains the full experimental pipeline behind two independent holdouts (821-tile 2015 spatial block, fully sealed 2020 temporal), four change-threshold sensitivities, channel-matched multi-horizon experiments, and MC Dropout calibration on 8.69 million validation pixels. Trained weights for every reported neural model are in `models/` (see [Pre-trained weights](#pre-trained-weights)); raw rasters and the manuscript are not committed, and [Data](#data) has download instructions.
 
 <p align="center">
   <img src="results/figures/fig_title_maps.png" alt="Representative validation tile">
@@ -95,12 +95,12 @@ Persistence achieves the lowest MSE because 89% of evaluated pixels are stable; 
 
 ### Statistical confirmation
 
-A paired Wilcoxon signed-rank test on per-tile FoM values across all 821 validation tiles confirms the model ranking. Bootstrap 95% confidence intervals are reported on the per-tile FoM gap (n_bootstrap = 2000).
+A paired Wilcoxon signed-rank test on per-tile FoM values across all 821 validation tiles confirms the model ranking. Bootstrap 95% confidence intervals are reported on the mean per-tile FoM gap (n_bootstrap = 2000).
 
-| Test                       | Median Δ FoM | Wilcoxon p-value     | Bootstrap 95% CI on Δ FoM |
+| Test                       | Median Δ FoM | Wilcoxon p-value     | Mean Δ FoM [bootstrap 95% CI] |
 |----------------------------|---------------|------------------------|----------------------------|
-| CNN > ConvLSTM             | +0.137         | 3.0 × 10⁻¹³⁶          | [0.142, 0.152]              |
-| U-Net > ConvLSTM           | +0.118         | 5.9 × 10⁻¹³⁶          | [0.126, 0.135]              |
+| CNN > ConvLSTM             | +0.137         | 3.0 × 10⁻¹³⁶          | +0.147 [0.142, 0.152]       |
+| U-Net > ConvLSTM           | +0.118         | 5.9 × 10⁻¹³⁶          | +0.130 [0.126, 0.135]       |
 | CNN > U-Net                | +0.016         | 2.3 × 10⁻⁶³            | n/a                          |
 
 ### Multi-horizon analysis
@@ -116,7 +116,7 @@ The apparent ConvLSTM catch-up at longer horizons is mostly a channel-count conf
 
 <p align="center">
   <img src="results/figures/fig_calibration.png" alt="MC Dropout calibration plot">
-  <br><em>Predicted standard deviation σ̂ from 20 MC Dropout forward passes versus mean absolute error, binned into 10 equal-count deciles of 8.68 M pixels each. Pearson r = 0.9834; Spearman ρ = 1.000.</em>
+  <br><em>Predicted standard deviation σ̂ from 20 MC Dropout forward passes versus mean absolute error, binned into 10 equal-count deciles (about 0.87 M pixels each, 8.69 M in total). Pearson r = 0.9834; Spearman ρ = 1.000.</em>
 </p>
 
 Every higher-uncertainty decile bin has strictly larger mean actual error than the bin below it. The ConvLSTM model is the only one in the benchmark producing calibrated spatial uncertainty.
@@ -205,7 +205,7 @@ All experiments predict the 2015 epoch. Forecast horizon is varied by truncating
 | Script                                | Variable                                                       |
 |---------------------------------------|----------------------------------------------------------------|
 | `scripts/run_ablations_3ch.py`        | Sequence length and channel ablations                          |
-| `scripts/channel_attribution_ci.py`   | Bootstrap confidence intervals on the channel-attribution effect |
+| `scripts/channel_attribution_ci.py`   | Delta-method confidence interval on the channel-attribution effect |
 
 ### 5. Threshold sensitivity
 
@@ -376,7 +376,32 @@ Total reproducible compute for the full benchmark across two seeds is roughly fi
 
 ## Pre-trained weights
 
-Trained model checkpoints are not distributed with this repository. To regenerate them, run the training scripts listed above on a machine with a CUDA-capable GPU. Each ConvLSTM training run produces a `models/best_3ch_mc_model.pth` checkpoint along with a JSON training history at `results/metrics/training_3ch_history.json`.
+The trained checkpoints behind the reported numbers are in `models/` (about 16 MB in total). Each file is a PyTorch `state_dict`:
+
+| File | Model | SHA-256 (first 16) |
+|---|---|---|
+| `models/best_3ch_mc_model.pth` | ConvLSTM + MC Dropout, seed 42 (main model, 5-year horizon) | `5eca8f199476d0d4` |
+| `models/best_3ch_mc_model_seed0.pth` | ConvLSTM + MC Dropout, seed 0 | `b5e56fdfc96cbaba` |
+| `models/best_cnn_3ch.pth` | Flat-stacking CNN, seed 42 (also used for the Lagos transfer) | `b7de0de44e61f35a` |
+| `models/best_cnn_seed0.pth` | Flat-stacking CNN, seed 0 | `385d62f02640304b` |
+| `models/best_unet_3ch.pth` | U-Net, seed 42 | `ee75bd08389ac330` |
+| `models/best_unet_3ch_seed0.pth` | U-Net, seed 0 | `c1674a0c3739e5b5` |
+| `models/best_convlstm_softjaccard.pth` | ConvLSTM trained with a soft-Jaccard loss | `c46f2dc3af3dd3df` |
+| `models/multihorizon_5yr.pth` | ConvLSTM, 5-year horizon (multi-horizon experiment) | `8091f11aa141b021` |
+| `models/multihorizon_10yr.pth` | ConvLSTM, 10-year horizon | `5c24b62ff303ee4e` |
+| `models/multihorizon_20yr.pth` | ConvLSTM, 20-year horizon | `e241b69830847f78` |
+
+Load one the same way the evaluation scripts do:
+
+```python
+import torch
+from src.models.convlstm import ConvLSTM
+
+model = ConvLSTM(input_channels=3, hidden_channels=64, num_layers=2, mc_dropout=0.1)
+model.load_state_dict(torch.load("models/best_3ch_mc_model.pth", map_location="cpu", weights_only=True))
+```
+
+The channel-control CNN runs (`scripts/run_cnn_channel_control.py`) did not keep their weights, so those numbers can only be regenerated by re-running that script. To retrain any model from scratch, run the training scripts listed above on a CUDA-capable GPU.
 
 <a id="citation"></a>
 
